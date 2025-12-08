@@ -1,9 +1,0 @@
-<section class="card">
-  <h2>Order Confirmation</h2>
-
-  <div *ngIf="!lastOrder || lastOrder.length === 0">No previous orders</div>
-
-  <ul *ngIf="lastOrder?.length">
-    <li *ngFor="let item of lastOrder">{{ item.name }} × {{ item.quantity }} — {{ item.price | currency }}</li>
-  </ul>
-</section>

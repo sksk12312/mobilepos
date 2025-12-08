@@ -1,12 +1,13 @@
-<div class="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
-  <div class="p-3 border-b bg-white dark:bg-gray-800">
-    <div class="max-w-3xl mx-auto flex items-center justify-between">
-      <div>Mobile POS</div>
-      <div>Time: <strong>{{ now | date:'medium' }}</strong></div>
+<div class="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+  <!-- Top Header -->
+  <header class="sticky top-0 z-50 bg-white border-b border-blue-100 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-4">
+      <!-- Empty header - content can be added here later -->
     </div>
-  </div>
+  </header>
 
-  <main class="max-w-3xl mx-auto">
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto px-4 py-8">
     <router-outlet></router-outlet>
   </main>
 </div>

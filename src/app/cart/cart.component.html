@@ -1,108 +1,79 @@
-<div class="relative flex min-h-screen w-full flex-col bg-background-light dark:bg-background-dark text-[#181211] dark:text-white">
+<div class="min-h-screen flex flex-col bg-gray-50">
 
-  <!-- Top App Bar -->
-  <header
-    class="sticky top-0 z-10 flex items-center p-4 pb-2 justify-between bg-background-light dark:bg-background-dark border-b border-gray-200/80 dark:border-gray-700/80">
-    <button (click)="goBack()" class="flex size-10 shrink-0 items-center justify-center">
+  <!-- Header -->
+  <header class="sticky top-0 z-20 bg-white border-b border-gray-200 px-4 py-4 flex items-center justify-between">
+    <button (click)="goBack()" class="text-gray-900 flex items-center justify-center w-10 h-10">
       <span class="material-symbols-outlined text-2xl">arrow_back</span>
     </button>
-    <h1 class="text-lg font-bold flex-1 text-center">Your Cart</h1>
+    <h1 class="text-lg font-bold flex-1 text-center text-gray-900">Your Cart</h1>
     <div class="w-10"></div>
   </header>
 
-  <main class="flex-grow pb-32">
-
-    <!-- Restaurant Info -->
-    <div
-      class="flex items-center gap-4 px-4 py-4 border-b border-gray-200/80 dark:border-gray-700/80 bg-background-light dark:bg-background-dark">
-      <div class="aspect-square size-12 rounded-xl bg-center bg-cover bg-no-repeat"
-           [style.background-image]="'url(' + restaurant.image + ')'">
+  <main class="flex-1 pb-40">
+    <!-- Cart Items -->
+    <div class="px-4 py-4 space-y-3">
+      <div *ngIf="cartItems.length === 0" class="text-center py-8 text-gray-600">
+        <p class="text-lg">Your cart is empty</p>
       </div>
 
-      <p class="text-lg font-semibold flex-1 truncate">
-        {{ restaurant.name }}
-      </p>
-    </div>
-
-    <!-- Cart Items -->
-    <div class="flex flex-col gap-1 py-4 bg-background-light dark:bg-background-dark">
-
-      <div *ngFor="let item of cartItems" class="flex gap-4 px-4 py-3 justify-between">
-
-        <!-- Item Info -->
-        <div class="flex items-start gap-4">
-          <div class="aspect-square size-[70px] rounded-lg bg-center bg-cover bg-no-repeat"
-               [style.background-image]="'url(' + item.image + ')'">
-          </div>
-
-          <div class="flex flex-col gap-1">
-            <p class="text-base font-medium">{{ item.name }}</p>
-            <p class="text-sm text-gray-500 dark:text-gray-400">${{ item.price.toFixed(2) }}</p>
-            <p class="text-sm text-gray-500 dark:text-gray-400">{{ item.note }}</p>
-          </div>
+      <div *ngFor="let item of cartItems" class="bg-white rounded-lg border border-gray-200 p-4 flex gap-4">
+        <!-- Image -->
+        <div class="w-20 h-20 rounded-lg bg-gray-300 flex-shrink-0 bg-cover bg-center"
+             [style.background-image]="'url(' + item.image + ')'">
         </div>
 
-        <!-- Qty & Delete -->
-        <div class="flex flex-col justify-between items-end">
-          <button (click)="removeItem(item)"
-            class="text-red-500 dark:text-red-400 flex items-center justify-center size-7">
-            <span class="material-symbols-outlined text-xl">delete</span>
+        <!-- Details -->
+        <div class="flex-1">
+          <p class="font-bold text-gray-900">{{ item.name }}</p>
+          <p class="text-sm text-gray-600 mt-1">{{ item.note }}</p>
+          <p class="font-bold text-gray-900 mt-2">${{ item.price.toFixed(2) }}</p>
+        </div>
+
+        <!-- Quantity Controls -->
+        <div class="flex flex-col items-end justify-between">
+          <button (click)="removeItem(item)" class="text-red-500 hover:text-red-600">
+            <span class="material-symbols-outlined">delete</span>
           </button>
-
-          <!-- Qty controls -->
-          <div class="flex items-center gap-2">
-            <button
-              (click)="decreaseQty(item)"
-              class="flex h-7 w-7 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700">
-              -
-            </button>
-
-            <span class="text-base font-medium w-4 text-center">{{ item.qty }}</span>
-
-            <button
-              (click)="increaseQty(item)"
-              class="flex h-7 w-7 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700">
-              +
-            </button>
+          <div class="flex items-center gap-2 border border-gray-300 rounded">
+            <button (click)="decreaseQty(item)" class="px-2 py-1 text-gray-600 hover:bg-gray-100">−</button>
+            <span class="px-3 font-medium">{{ item.qty }}</span>
+            <button (click)="increaseQty(item)" class="px-2 py-1 text-gray-600 hover:bg-gray-100">+</button>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Special Instructions -->
-    <div class="px-4 py-3">
-      <p class="text-base font-medium pb-2">Special Instructions</p>
+    <div class="px-4 py-4">
+      <p class="font-bold text-gray-900 mb-2">Special Instructions</p>
       <textarea
         [(ngModel)]="specialInstructions"
-        placeholder="Any allergies or special requests? Let the kitchen know."
-        class="w-full min-h-24 rounded-lg p-4 text-base border border-gray-300 dark:border-gray-600 bg-background-light dark:bg-gray-800 text-[#181211] dark:text-white focus:ring-2 focus:ring-primary/50">
+        placeholder="Any allergies or special requests?"
+        class="w-full h-24 rounded-lg border border-gray-300 p-3 text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500">
       </textarea>
     </div>
 
     <!-- Totals -->
-    <div class="mt-4 px-4 py-4 space-y-3 border-t border-gray-200/80 dark:border-gray-700/80">
-      <div class="flex justify-between">
-        <p class="text-gray-600 dark:text-gray-300">Subtotal</p>
-        <p class="font-medium">${{ subtotal.toFixed(2) }}</p>
+    <div class="px-4 py-4 border-t border-gray-200 space-y-2">
+      <div class="flex justify-between text-gray-600">
+        <p>Subtotal</p>
+        <p>${{ subtotal.toFixed(2) }}</p>
       </div>
-
-      <div class="flex justify-between">
-        <p class="text-gray-600 dark:text-gray-300">Taxes & Fees</p>
-        <p class="font-medium">${{ taxes.toFixed(2) }}</p>
+      <div class="flex justify-between text-gray-600">
+        <p>Taxes & Fees</p>
+        <p>${{ taxes.toFixed(2) }}</p>
       </div>
-
-      <div class="flex justify-between pt-2 border-t border-gray-200/80 dark:border-gray-700/80">
-        <p class="font-bold">Total</p>
-        <p class="font-bold">${{ total.toFixed(2) }}</p>
+      <div class="flex justify-between font-bold text-gray-900 pt-2 border-t border-gray-200">
+        <p>Total</p>
+        <p>${{ total.toFixed(2) }}</p>
       </div>
     </div>
   </main>
 
-  <!-- CTA Button -->
-  <footer
-    class="fixed bottom-0 left-0 right-0 p-4 bg-background-light dark:bg-background-dark border-t border-gray-200/80 dark:border-gray-700/80">
+  <!-- Proceed Button -->
+  <footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
     <button (click)="goToPayment()"
-      class="w-full bg-primary text-white font-bold py-4 rounded-xl text-lg hover:bg-primary/90">
+      class="w-full bg-red-500 text-white font-bold py-4 rounded-lg hover:bg-red-600 transition-all">
       Proceed to Payment
     </button>
   </footer>

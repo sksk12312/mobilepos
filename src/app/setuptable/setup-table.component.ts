@@ -62,6 +62,7 @@ export class SetupTableComponent {
     console.log('Guests:', this.guests);
     console.log('Selected Customer:', this.selectedCustomer);
 
-    this.router.navigate(['/pos']);
+    // Route to menu to start ordering
+    this.router.navigate(['/menu']);
   }
 }

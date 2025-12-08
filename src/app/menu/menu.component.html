@@ -1,112 +1,85 @@
-<div class="flex min-h-screen flex-col bg-background-light dark:bg-background-dark font-display">
+<div class="min-h-screen flex flex-col bg-gray-50">
 
   <!-- Header -->
-  <header class="sticky top-0 z-10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm">
-    <div class="flex items-center p-4 pb-2 justify-between">
-      <button (click)="goBack()"
-        class="text-text-primary-light dark:text-text-primary-dark flex size-12 items-center justify-center -ml-3">
-        <span class="material-symbols-outlined">arrow_back</span>
+  <header class="sticky top-0 z-20 bg-white border-b border-gray-200">
+    <div class="flex items-center px-4 py-4 justify-between">
+      <button (click)="goBack()" class="text-gray-900 flex items-center justify-center w-10 h-10">
+        <span class="material-symbols-outlined text-2xl">arrow_back</span>
       </button>
-
-      <h1 class="text-lg font-bold flex-1 text-center text-text-primary-light dark:text-text-primary-dark">
-        Menu
-      </h1>
-
-      <div class="size-12"></div>
+      <h1 class="text-lg font-bold flex-1 text-center text-gray-900">Menu</h1>
+      <div class="w-10"></div>
     </div>
 
     <!-- Search Bar -->
-    <div class="px-4 py-3">
-      <div class="flex items-center h-12 w-full rounded-lg bg-surface-light dark:bg-surface-dark">
-        <span class="material-symbols-outlined text-text-secondary-light dark:text-text-secondary-dark pl-4">
-          search
-        </span>
-
+    <div class="px-4 py-2">
+      <div class="flex items-center h-11 rounded-lg border border-gray-300 bg-white">
+        <span class="material-symbols-outlined text-gray-500 px-3 text-xl">search</span>
         <input
           type="text"
           [(ngModel)]="searchQuery"
           (input)="filterMenu()"
           placeholder="Search for a dish..."
-          class="flex-1 h-full bg-surface-light dark:bg-surface-dark text-text-primary-light dark:text-text-primary-dark placeholder:text-text-secondary-light dark:placeholder:text-text-secondary-dark px-4 rounded-r-xl focus:outline-none"
+          class="flex-1 h-full bg-white text-gray-900 placeholder:text-gray-500 px-2 focus:outline-none"
         />
       </div>
     </div>
 
     <!-- Category Pills -->
-    <div class="flex gap-3 px-4 pt-2 pb-4 overflow-x-auto">
+    <div class="flex gap-2 px-4 py-3 overflow-x-auto">
       <button
         *ngFor="let category of categories"
         (click)="selectCategory(category)"
-        class="flex h-10 items-center justify-center rounded-full px-5 whitespace-nowrap transition-all"
-        [ngClass]="category === selectedCategory ? 'bg-primary text-white' : 'bg-surface-light dark:bg-surface-dark text-text-primary-light dark:text-text-primary-dark'">
-        <p class="text-sm font-medium">{{ category }}</p>
+        class="px-4 py-2 rounded-full whitespace-nowrap transition-all font-medium text-sm"
+        [ngClass]="category === selectedCategory 
+          ? 'bg-red-500 text-white' 
+          : 'bg-gray-200 text-gray-900 hover:bg-gray-300'">
+        {{ category }}
       </button>
     </div>
   </header>
 
   <!-- Menu Items -->
-  <main class="flex-1">
-    <h2 class="text-[22px] font-bold px-4 pb-3 pt-4 text-text-primary-light dark:text-text-primary-dark">
-      {{ selectedCategory }}
-    </h2>
+  <main class="flex-1 px-4 py-4 pb-28">
+    <h2 class="text-2xl font-bold text-gray-900 mb-4">{{ selectedCategory }}</h2>
 
-    <div class="flex flex-col gap-2 pb-24">
-
+    <div class="space-y-3">
       <div
         *ngFor="let item of filteredMenu"
-        class="bg-surface-light dark:bg-surface-dark mx-4 rounded-xl flex items-center gap-4 p-3">
+        class="bg-white rounded-lg border border-gray-200 p-4 flex gap-4 hover:shadow-md transition-all">
 
         <!-- Image -->
         <div
-          class="aspect-square size-20 shrink-0 rounded-lg bg-cover bg-center"
+          class="w-24 h-24 rounded-lg bg-gray-300 flex-shrink-0 bg-cover bg-center"
           [style.background-image]="'url(' + item.image + ')'">
         </div>
 
         <!-- Details -->
-        <div class="flex-1 flex flex-col">
-          <p class="text-base font-semibold text-text-primary-light dark:text-text-primary-dark line-clamp-1">
-            {{ item.name }}
-          </p>
-
-          <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark line-clamp-2 mt-1">
-            {{ item.description }}
-          </p>
-
-          <p class="text-base mt-2 font-bold text-text-primary-light dark:text-text-primary-dark">
-            ${{ item.price }}
-          </p>
+        <div class="flex-1 flex flex-col justify-between">
+          <div>
+            <p class="font-bold text-gray-900 line-clamp-1">{{ item.name }}</p>
+            <p class="text-sm text-gray-600 line-clamp-2 mt-1">{{ item.description }}</p>
+          </div>
+          <p class="text-lg font-bold text-gray-900">${{ item.price.toFixed(2) }}</p>
         </div>
 
-        <!-- Buttons -->
-        <div class="flex items-center gap-2">
-          <!-- Add -->
-          <button
-            (click)="addToCart(item)"
-            class="flex size-10 items-center justify-center rounded-full bg-primary/20 text-primary">
-            <span class="material-symbols-outlined text-2xl">add</span>
-          </button>
-
-          <!-- More -->
-          <button
-            class="flex size-10 items-center justify-center rounded-full bg-surface-light dark:bg-surface-dark border border-text-secondary-light/30 dark:border-text-secondary-dark/30 text-text-secondary-light dark:text-text-secondary-dark">
-            <span class="material-symbols-outlined text-2xl">more_vert</span>
-          </button>
-        </div>
-
+        <!-- Add Button -->
+        <button
+          (click)="addToCart(item)"
+          class="bg-red-500 text-white rounded-full w-12 h-12 flex items-center justify-center hover:bg-red-600 transition-all self-center">
+          <span class="material-symbols-outlined">add</span>
+        </button>
       </div>
-
     </div>
   </main>
 
   <!-- Floating Cart Button -->
   <div class="fixed bottom-6 right-6">
     <button (click)="openCart()"
-      class="relative flex items-center justify-center w-16 h-16 bg-primary text-white rounded-full shadow-lg">
+      class="relative flex items-center justify-center w-16 h-16 bg-red-500 text-white rounded-full shadow-lg hover:bg-red-600 transition-all">
       <span class="material-symbols-outlined text-3xl">shopping_bag</span>
-
       <div
         *ngIf="cartCount > 0"
-        class="absolute -top-1 -right-1 flex items-center justify-center w-6 h-6 bg-white text-primary text-xs font-bold rounded-full border-2 border-primary">
+        class="absolute -top-2 -right-2 flex items-center justify-center w-6 h-6 bg-white text-red-500 text-xs font-bold rounded-full">
         {{ cartCount }}
       </div>
     </button>

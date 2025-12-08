@@ -47,7 +47,7 @@ export class SelectOutletComponent {
   constructor(private router: Router) {}
 
   goBack() {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/dining-experience']);
   }
 
   filterOutlets() {
@@ -62,11 +62,17 @@ export class SelectOutletComponent {
     outlet.fav = !outlet.fav;
   }
 
+  selectOutlet(outlet: any) {
+    console.log('Selected outlet:', outlet.name);
+    // Navigate to menu after selecting outlet
+    this.router.navigate(['/menu']);
+  }
+
   statusColor(status: string) {
     switch (status) {
-      case 'Open': return 'text-status-green';
-      case 'Closing Soon': return 'text-status-orange';
-      case 'Closed': return 'text-status-red';
+      case 'Open': return 'text-green-600';
+      case 'Closing Soon': return 'text-yellow-600';
+      case 'Closed': return 'text-red-600';
       default: return '';
     }
   }

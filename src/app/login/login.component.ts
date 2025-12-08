@@ -30,7 +30,7 @@ export class LoginComponent {
   login() {
   console.log('Logging in with:', this.email, this.password);
 
-    // Navigate to POS screen
-    this.router.navigate(['/pos']);
+    // Navigate to dining experience after successful login
+    this.router.navigate(['/dining-experience']);
   }
 }

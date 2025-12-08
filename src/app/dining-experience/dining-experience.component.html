@@ -1,103 +1,79 @@
-<div class="flex flex-col min-h-screen bg-background-light dark:bg-background-dark font-display">
+<div class="min-h-screen bg-gray-50 flex flex-col">
 
-  <!-- Top App Bar -->
-  <div class="flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 sticky top-0 z-10 justify-between">
-    <button (click)="goBack()" class="flex size-10 items-center justify-center text-text-light-primary dark:text-text-dark-primary">
+  <!-- Header -->
+  <div class="sticky top-0 z-20 bg-white border-b border-gray-200 px-4 py-4 flex items-center justify-between">
+    <button (click)="goBack()" class="text-gray-900 flex items-center justify-center w-10 h-10">
       <span class="material-symbols-outlined text-2xl">arrow_back</span>
     </button>
-
-    <h2 class="text-lg font-bold flex-1 text-center text-text-light-primary dark:text-text-dark-primary">
-      Choose Experience
-    </h2>
-
-    <div class="size-10"></div>
+    <h2 class="text-lg font-bold text-gray-900 flex-1 text-center">Choose Experience</h2>
+    <div class="w-10"></div>
   </div>
 
-  <!-- Headline -->
-  <h1 class="text-text-light-primary dark:text-text-dark-primary tracking-tight text-[32px] font-bold px-4 pb-3 pt-6">
-    How would you like to dine?
-  </h1>
+  <!-- Main Content -->
+  <div class="flex-1 px-4 py-6">
+    <!-- Headline -->
+    <h1 class="text-4xl font-bold text-gray-900 mb-8">How would you like to dine?</h1>
 
-  <!-- Radio Card Group -->
-  <div role="radiogroup" class="flex flex-col gap-4 px-4 pb-4 flex-grow">
-    <!-- Fine Dine -->
-    <label
-      class="flex items-center gap-4 rounded-xl border p-4 bg-white dark:bg-[#2f1f1a]
-             transition-all duration-200 border-border-light dark:border-border-dark
-             has-[:checked]:border-primary has-[:checked]:ring-2 has-[:checked]:ring-primary/30
-             has-[:checked]:bg-primary/5 dark:has-[:checked]:bg-primary/10">
+    <!-- Radio Card Group -->
+    <div class="space-y-4">
+      <!-- Fine Dine -->
+      <label class="flex items-center gap-4 p-4 bg-white border-2 border-gray-200 rounded-xl cursor-pointer transition-all hover:border-red-500 has-[:checked]:border-red-500 has-[:checked]:bg-red-50">
+        <input
+          type="radio"
+          name="experience"
+          value="fine_dine"
+          [(ngModel)]="selectedExperience"
+          class="w-5 h-5 text-red-500 cursor-pointer"
+        />
+        <span class="material-symbols-outlined text-3xl text-red-500">restaurant</span>
+        <div class="flex-1">
+          <p class="font-semibold text-gray-900">Fine Dine</p>
+          <p class="text-sm text-gray-600">Reserve a table for our premium experience.</p>
+        </div>
+      </label>
 
-      <span class="material-symbols-outlined text-3xl text-primary">dinner_dining</span>
+      <!-- Normal Dining -->
+      <label class="flex items-center gap-4 p-4 bg-white border-2 border-red-500 rounded-xl cursor-pointer transition-all bg-red-50 has-[:checked]:border-red-500 has-[:checked]:bg-red-50">
+        <input
+          type="radio"
+          name="experience"
+          value="normal_dining"
+          [(ngModel)]="selectedExperience"
+          class="w-5 h-5 text-red-500 cursor-pointer"
+          checked
+        />
+        <span class="material-symbols-outlined text-3xl text-red-500">restaurant</span>
+        <div class="flex-1">
+          <p class="font-semibold text-gray-900">Normal Dining</p>
+          <p class="text-sm text-gray-600">Join the waitlist or find a table now.</p>
+        </div>
+      </label>
 
-      <div class="flex flex-col grow">
-        <p class="text-text-light-primary dark:text-text-dark-primary font-semibold">Fine Dine</p>
-        <p class="text-text-light-secondary dark:text-text-dark-secondary text-sm">Reserve a table for our premium experience.</p>
-      </div>
-
-      <input
-        type="radio"
-        name="experience"
-        value="fine_dine"
-        [(ngModel)]="selectedExperience"
-        class="radio-input"
-      />
-    </label>
-
-    <!-- Normal Dining -->
-    <label
-      class="flex items-center gap-4 rounded-xl border p-4 bg-white dark:bg-[#2f1f1a]
-             transition-all duration-200 border-border-light dark:border-border-dark
-             has-[:checked]:border-primary has-[:checked]:ring-2 has-[:checked]:ring-primary/30
-             has-[:checked]:bg-primary/5 dark:has-[:checked]:bg-primary/10">
-
-      <span class="material-symbols-outlined text-3xl text-primary">restaurant</span>
-
-      <div class="flex flex-col grow">
-        <p class="text-text-light-primary dark:text-text-dark-primary font-semibold">Normal Dining</p>
-        <p class="text-text-light-secondary dark:text-text-dark-secondary text-sm">Join the waitlist or find a table now.</p>
-      </div>
-
-      <input
-        type="radio"
-        name="experience"
-        value="normal_dining"
-        [(ngModel)]="selectedExperience"
-        class="radio-input"
-      />
-    </label>
-
-    <!-- Takeout -->
-    <label
-      class="flex items-center gap-4 rounded-xl border p-4 bg-white dark:bg-[#2f1f1a]
-             transition-all duration-200 border-border-light dark:border-border-dark
-             has-[:checked]:border-primary has-[:checked]:ring-2 has-[:checked]:ring-primary/30
-             has-[:checked]:bg-primary/5 dark:has-[:checked]:bg-primary/10">
-
-      <span class="material-symbols-outlined text-3xl text-primary">shopping_bag</span>
-
-      <div class="flex flex-col grow">
-        <p class="text-text-light-primary dark:text-text-dark-primary font-semibold">Takeout</p>
-        <p class="text-text-light-secondary dark:text-text-dark-secondary text-sm">Order ahead for pickup.</p>
-      </div>
-
-      <input
-        type="radio"
-        name="experience"
-        value="takeout"
-        [(ngModel)]="selectedExperience"
-        class="radio-input"
-      />
-    </label>
+      <!-- Takeout -->
+      <label class="flex items-center gap-4 p-4 bg-white border-2 border-gray-200 rounded-xl cursor-pointer transition-all hover:border-red-500 has-[:checked]:border-red-500 has-[:checked]:bg-red-50">
+        <input
+          type="radio"
+          name="experience"
+          value="takeout"
+          [(ngModel)]="selectedExperience"
+          class="w-5 h-5 text-red-500 cursor-pointer"
+        />
+        <span class="material-symbols-outlined text-3xl text-red-500">shopping_bag</span>
+        <div class="flex-1">
+          <p class="font-semibold text-gray-900">Takeout</p>
+          <p class="text-sm text-gray-600">Order ahead for pickup.</p>
+        </div>
+      </label>
+    </div>
   </div>
 
   <!-- Continue Button -->
-  <div class="sticky bottom-0 bg-background-light dark:bg-background-dark p-4 pb-6 pt-2">
+  <div class="sticky bottom-0 bg-white border-t border-gray-200 p-4">
     <button
       (click)="continue()"
-      class="flex w-full h-14 items-center justify-center rounded-xl bg-primary text-white font-bold hover:opacity-90"
+      class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-4 rounded-lg transition-all"
     >
       Continue
     </button>
   </div>
-
 </div>

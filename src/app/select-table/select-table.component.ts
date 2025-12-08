@@ -42,7 +42,8 @@ export class SelectTableComponent {
 
     console.log('Viewing order for Table:', this.selectedTable);
 
-    this.router.navigate(['/pos'], {
+    // Route to menu and pass selected table as query param
+    this.router.navigate(['/menu'], {
       queryParams: { table: this.selectedTable.number }
     });
   }

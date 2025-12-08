@@ -66,45 +66,26 @@ export class MenuComponent {
   }
 
   goBack() {
-    this.router.navigate(['/select-table']);
+    this.router.navigate(['/select-outlet']);
   }
 
-  /**
-   * Filter menu by search query and current selected category.
-   * If the selected category is 'Mains', navigate to customize screen instead.
-   */
   filterMenu() {
     const term = this.searchQuery.trim().toLowerCase();
-
-    // keep search + category filter in sync;
     this.filteredMenu = this.menu.filter(item =>
       item.category === this.selectedCategory &&
       item.name.toLowerCase().includes(term)
     );
   }
 
-  /**
-   * Called when a category pill is clicked.
-   * If category is 'Mains', open the customize screen.
-   */
   selectCategory(category: string) {
-    // immediate navigation for 'Mains' to open customize screen
-    if (category === 'Mains') {
-      // optional: pass params or selected item later
-      this.router.navigate(['/customize-item']);
-      return;
-    }
-
-    // normal flow for other categories
     this.selectedCategory = category;
     this.searchQuery = '';
-    this.filteredMenu = this.menu.filter(item => item.category === category);
+    this.filterMenu();
   }
 
   addToCart(item: MenuItem) {
     this.cartCount++;
-    console.log('Added to cart:', item);
-    // TODO: integrate with CartService for persistent cart
+    console.log('Added to cart:', item.name);
   }
 
   openCart() {

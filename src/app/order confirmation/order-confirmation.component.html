@@ -1,87 +1,82 @@
-<div class="relative flex min-h-screen w-full flex-col bg-background-light dark:bg-background-dark group/design-root overflow-x-hidden">
+<div class="min-h-screen flex flex-col bg-gray-50">
 
-  <!-- Top App Bar -->
-  <header class="sticky top-0 z-10 flex h-14 items-center justify-between border-b border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark px-4">
-    <button (click)="goBack()" class="flex h-12 w-12 items-center justify-center text-content-light dark:text-content-dark">
-      <span class="material-symbols-outlined">arrow_back</span>
+  <!-- Header -->
+  <header class="sticky top-0 z-20 bg-white border-b border-gray-200 px-4 py-4 flex items-center justify-between">
+    <button (click)="goBack()" class="text-gray-900 flex items-center justify-center w-10 h-10">
+      <span class="material-symbols-outlined text-2xl">arrow_back</span>
     </button>
-
-    <h1 class="flex-1 text-center text-lg font-bold text-content-light dark:text-content-dark">Order Details</h1>
-
-    <div class="h-12 w-12"></div>
+    <h1 class="text-lg font-bold flex-1 text-center text-gray-900">Order Details</h1>
+    <div class="w-10"></div>
   </header>
 
-  <main class="flex-1 pb-32">
-    <!-- Order Status Card -->
-    <div class="flex items-center gap-4 bg-surface-light dark:bg-surface-dark px-4 min-h-[72px] py-4">
-      <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-success-green/10 text-success-green">
-        <span class="material-symbols-outlined">check_circle</span>
+  <main class="flex-1 pb-40">
+    <!-- Success Status -->
+    <div class="bg-white border-b border-gray-200 px-4 py-6 flex items-center gap-4">
+      <div class="flex items-center justify-center w-16 h-16 rounded-full bg-green-100 text-green-600">
+        <span class="material-symbols-outlined text-4xl">check_circle</span>
       </div>
-
-      <div class="flex flex-col justify-center">
-        <p class="text-base font-bold text-success-green">Completed</p>
-        <p class="text-sm text-subtle-light dark:text-subtle-dark">
-          Order {{ orderId }} - {{ paidAtDisplay }}
-        </p>
+      <div>
+        <p class="text-lg font-bold text-green-600">Order Confirmed!</p>
+        <p class="text-sm text-gray-600">Order {{ orderId }} • {{ paidAtDisplay }}</p>
       </div>
     </div>
 
     <!-- Restaurant Info -->
-    <div class="flex items-center gap-4 bg-surface-light dark:bg-surface-dark px-4 min-h-14 py-3 border-t border-border-light dark:border-border-dark">
-      <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-10" [style.background-image]="'url(' + restaurant.image + ')'"></div>
-      <p class="flex-1 truncate text-base font-medium text-content-light dark:text-content-dark">{{ restaurant.name }}</p>
+    <div class="bg-white border-b border-gray-200 px-4 py-4 flex items-center gap-4">
+      <div class="w-12 h-12 rounded-lg bg-gray-300 flex-shrink-0 bg-cover bg-center"
+           [style.background-image]="'url(' + restaurant.image + ')'">
+      </div>
+      <div>
+        <p class="font-bold text-gray-900">{{ restaurant.name }}</p>
+        <p class="text-sm text-gray-600">Estimated time: 25-30 min</p>
+      </div>
     </div>
 
-    <!-- Your Order -->
+    <!-- Your Order Section -->
     <div class="mt-4">
-      <h2 class="px-4 pb-2 pt-2 text-lg font-bold text-content-light dark:text-content-dark">Your Order</h2>
-
-      <div class="bg-surface-light dark:bg-surface-dark">
-        <div *ngFor="let item of orderItems" class="flex items-center gap-4 px-4 min-h-[72px] py-3 border-b border-border-light dark:border-border-dark">
-          <img class="size-12 shrink-0 rounded-lg object-cover" [src]="item.image" [alt]="item.name"/>
-          <div class="flex flex-1 flex-col justify-center">
-            <p class="text-base font-medium line-clamp-1 text-content-light dark:text-content-dark">{{ item.name }}</p>
-            <p class="text-sm text-subtle-light dark:text-subtle-dark">{{ item.qty }} x ${{ item.price }}</p>
+      <h2 class="px-4 py-2 text-lg font-bold text-gray-900">Your Order</h2>
+      <div class="bg-white border-t border-b border-gray-200">
+        <div *ngFor="let item of orderItems" class="px-4 py-4 border-b border-gray-200 last:border-b-0 flex items-start gap-4">
+          <div class="w-16 h-16 rounded-lg bg-gray-300 flex-shrink-0 bg-cover bg-center"
+               [style.background-image]="'url(' + item.image + ')'">
           </div>
-          <div class="shrink-0"><p class="text-base font-medium text-content-light dark:text-content-dark">${{ (item.price * item.qty) | number:'1.2-2' }}</p></div>
+          <div class="flex-1">
+            <p class="font-bold text-gray-900">{{ item.name }}</p>
+            <p class="text-sm text-gray-600 mt-1">{{ item.qty }} x ${{ item.price }}</p>
+          </div>
+          <p class="font-bold text-gray-900">${{ (item.price * item.qty) | number:'1.2-2' }}</p>
         </div>
       </div>
     </div>
 
     <!-- Payment Summary -->
-    <div class="mt-4 px-4">
-      <h2 class="pb-2 pt-2 text-lg font-bold text-content-light dark:text-content-dark">Payment Summary</h2>
-
-      <div class="bg-surface-light dark:bg-surface-dark px-4 py-3 space-y-3">
-        <div class="flex justify-between text-sm">
-          <p class="text-subtle-light dark:text-subtle-dark">Subtotal</p>
-          <p class="text-content-light dark:text-content-dark">${{ subtotal | number:'1.2-2' }}</p>
+    <div class="mt-4">
+      <h2 class="px-4 py-2 text-lg font-bold text-gray-900">Payment Summary</h2>
+      <div class="bg-white border-t border-b border-gray-200 px-4 py-4 space-y-3">
+        <div class="flex justify-between text-gray-600">
+          <p>Subtotal</p>
+          <p>${{ subtotal | number:'1.2-2' }}</p>
         </div>
-
-        <div class="flex justify-between text-sm">
-          <p class="text-subtle-light dark:text-subtle-dark">Taxes & Fees</p>
-          <p class="text-content-light dark:text-content-dark">${{ taxes | number:'1.2-2' }}</p>
+        <div class="flex justify-between text-gray-600">
+          <p>Taxes & Fees</p>
+          <p>${{ taxes | number:'1.2-2' }}</p>
         </div>
-
-        <div class="flex justify-between text-sm">
-          <p class="text-subtle-light dark:text-subtle-dark">Delivery Fee</p>
-          <p class="text-content-light dark:text-content-dark">${{ deliveryFee | number:'1.2-2' }}</p>
+        <div class="flex justify-between text-gray-600">
+          <p>Delivery Fee</p>
+          <p>${{ deliveryFee | number:'1.2-2' }}</p>
         </div>
-
-        <div class="flex justify-between text-sm">
-          <p class="text-subtle-light dark:text-subtle-dark">Tip</p>
-          <p class="text-content-light dark:text-content-dark">${{ tip | number:'1.2-2' }}</p>
+        <div class="flex justify-between text-gray-600">
+          <p>Tip</p>
+          <p>${{ tip | number:'1.2-2' }}</p>
         </div>
-
-        <div class="border-t border-dashed border-border-light dark:border-border-dark my-3"></div>
-
-        <div class="flex justify-between text-base font-bold">
-          <p class="text-content-light dark:text-content-dark">Total</p>
-          <p class="text-content-light dark:text-content-dark">${{ total | number:'1.2-2' }}</p>
+        <div class="border-t border-gray-200 pt-3">
+          <div class="flex justify-between font-bold text-lg text-gray-900">
+            <p>Total</p>
+            <p>${{ total | number:'1.2-2' }}</p>
+          </div>
         </div>
-
-        <div class="flex items-center gap-2 pt-2 text-sm text-subtle-light dark:text-subtle-dark">
-          <span class="material-symbols-outlined text-base">credit_card</span>
+        <div class="flex items-center gap-2 text-sm text-gray-600 pt-2">
+          <span class="material-symbols-outlined text-xl">credit_card</span>
           <span>Paid with {{ paymentMethod }}</span>
         </div>
       </div>
@@ -89,17 +84,17 @@
   </main>
 
   <!-- Bottom Action Bar -->
-  <footer class="fixed bottom-0 left-0 right-0 z-10 bg-surface-light dark:bg-surface-dark p-4 border-t border-border-light dark:border-border-dark">
-    <div class="grid grid-cols-2 gap-4">
-      <button class="flex w-full items-center justify-center gap-2 rounded-xl h-12 bg-primary/20 text-primary">
-        <span class="material-symbols-outlined text-xl">help_outline</span>
+  <footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
+    <div class="grid grid-cols-2 gap-3">
+      <button class="h-12 rounded-lg bg-red-50 text-red-600 font-bold flex items-center justify-center gap-2 hover:bg-red-100 transition-all">
+        <span class="material-symbols-outlined">help_outline</span>
         Get Help
       </button>
-
-      <button (click)="orderAgain()" class="flex w-full items-center justify-center gap-2 rounded-xl h-12 bg-primary text-white">
-        <span class="material-symbols-outlined text-xl">replay</span>
+      <button (click)="orderAgain()" class="h-12 rounded-lg bg-red-500 text-white font-bold flex items-center justify-center gap-2 hover:bg-red-600 transition-all">
+        <span class="material-symbols-outlined">replay</span>
         Order Again
       </button>
     </div>
   </footer>
+
 </div>

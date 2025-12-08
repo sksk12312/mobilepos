@@ -22,12 +22,7 @@ export class DiningExperienceComponent {
   continue() {
     console.log('Selected dining experience:', this.selectedExperience);
 
-    if (this.selectedExperience === 'takeout') {
-      this.router.navigate(['/pos']);
-    } else if (this.selectedExperience === 'fine_dine') {
-      this.router.navigate(['/reservation']);
-    } else {
-      this.router.navigate(['/waitlist']);
-    }
+    // All dining experiences go to select outlet first
+    this.router.navigate(['/select-outlet']);
   }
 }
