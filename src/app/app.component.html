@@ -1,0 +1,12 @@
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
+  <div class="p-3 border-b bg-white dark:bg-gray-800">
+    <div class="max-w-3xl mx-auto flex items-center justify-between">
+      <div>Mobile POS</div>
+      <div>Time: <strong>{{ now | date:'medium' }}</strong></div>
+    </div>
+  </div>
+
+  <main class="max-w-3xl mx-auto">
+    <router-outlet></router-outlet>
+  </main>
+</div>

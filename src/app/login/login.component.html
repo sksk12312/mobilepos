@@ -1,0 +1,32 @@
+<div class="min-h-screen bg-background-light dark:bg-background-dark flex flex-col">
+  <!-- Top app bar -->
+  <header class="h-12 flex items-center justify-between px-4 border-b border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark">
+    <div class="text-sm font-medium text-content-light dark:text-content-dark">Mobile POS</div>
+    <div class="text-xs text-subtle-light dark:text-subtle-dark">Sign in</div>
+  </header>
+
+  <main class="flex-1 flex items-center justify-center p-4">
+    <form class="w-full max-w-md p-6 bg-white dark:bg-neutral-900 rounded-lg shadow-md" (ngSubmit)="login()">
+      <h2 class="text-2xl font-bold mb-6 text-neutral-900 dark:text-neutral-100">Welcome back</h2>
+
+      <label class="block mb-2 text-sm text-neutral-700 dark:text-neutral-200">Email</label>
+      <input type="email" [(ngModel)]="email" name="email" class="w-full mb-4 p-3 rounded border" placeholder="you@example.com" />
+
+      <label class="block mb-2 text-sm text-neutral-700 dark:text-neutral-200">Password</label>
+      <div class="flex items-center gap-2 mb-4">
+        <input [type]="passwordVisible ? 'text' : 'password'" [(ngModel)]="password" name="password" class="flex-1 p-3 rounded border" placeholder="Enter your password" />
+        <button type="button" (click)="togglePassword()" class="px-3 text-sm text-neutral-700 dark:text-neutral-200">{{ passwordVisible ? 'Hide' : 'Show' }}</button>
+      </div>
+
+      <button type="submit" class="mt-2 w-full py-3 bg-primary text-white rounded">Sign in</button>
+
+      <div class="mt-4 text-center text-sm text-subtle-light dark:text-subtle-dark">
+        Don't have an account? <a class="text-primary" href="#">Get started</a>
+      </div>
+    </form>
+  </main>
+
+  <footer class="h-16 flex items-center justify-center border-t border-border-light dark:border-border-dark">
+    <div class="text-xs text-subtle-light dark:text-subtle-dark">v0.0.0</div>
+  </footer>
+</div>

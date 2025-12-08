@@ -1,0 +1,74 @@
+<div class="flex min-h-screen flex-col bg-background-light dark:bg-background-dark font-display">
+
+  <!-- Header -->
+  <header
+    class="sticky top-0 z-10 flex items-center justify-between bg-background-light/80 dark:bg-background-dark/80 p-4 pb-2 backdrop-blur-sm">
+    <button (click)="goBack()"
+      class="flex h-10 w-10 items-center justify-center rounded-full text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-800">
+      <span class="material-symbols-outlined">arrow_back</span>
+    </button>
+
+    <h1 class="flex-1 text-center text-lg font-bold text-zinc-900 dark:text-zinc-100">Select Table</h1>
+
+    <div class="w-10"></div>
+  </header>
+
+  <!-- Main -->
+  <main class="flex flex-1 flex-col px-4 pt-4 pb-28">
+    <!-- Dining Area Label -->
+    <div class="mb-4">
+      <p class="text-sm font-medium text-zinc-500 dark:text-zinc-400">Dining Area</p>
+      <h2 class="text-2xl font-bold text-zinc-900 dark:text-zinc-100">{{ diningArea }}</h2>
+    </div>
+
+    <!-- Table Grid -->
+    <div class="grid grid-cols-3 gap-3">
+
+      <button
+        *ngFor="let table of tables"
+        (click)="selectTable(table)"
+        class="flex aspect-square flex-col justify-between rounded-xl border-2 p-3 text-left transition-all ring-2"
+        [ngClass]="[
+          table.status === 'available' ? 'border-green-500 dark:border-green-400 bg-white dark:bg-zinc-900' : '',
+          table.status === 'occupied' ? 'border-red-500 bg-white dark:border-red-500 dark:bg-zinc-900' : '',
+          table.status === 'reserved' ? 'border-yellow-500 bg-white dark:border-yellow-400 dark:bg-zinc-900' : '',
+          selectedTable?.id === table.id ? 'bg-primary/10 dark:bg-primary/20 ring-primary/20 border-primary' : 'ring-transparent'
+        ]"
+      >
+
+        <div class="flex items-center justify-between">
+          <p class="text-4xl font-bold text-zinc-900 dark:text-zinc-100">{{ table.number }}</p>
+        </div>
+
+        <div>
+          <p class="text-sm font-semibold"
+             [ngClass]="{
+               'text-zinc-700 dark:text-zinc-300': table.status !== 'selected',
+               'text-primary': selectedTable?.id === table.id
+             }">
+            {{ table.total | currency:'USD':'symbol':'1.2-2' }}
+          </p>
+
+          <p class="text-xs font-medium text-zinc-500 dark:text-zinc-400">
+            {{ table.items > 0 ? (table.items + ' Items') : table.status === 'reserved' ? 'Reserved' : '0 Items' }}
+          </p>
+        </div>
+
+      </button>
+
+    </div>
+
+  </main>
+
+  <!-- Footer CTA -->
+  <footer
+    class="fixed bottom-0 left-0 right-0 z-10 border-t border-zinc-200 bg-background-light/80 p-4 backdrop-blur-sm dark:border-zinc-800 dark:bg-background-dark/80">
+    <button
+      [disabled]="!selectedTable"
+      (click)="viewOrder()"
+      class="flex h-12 w-full items-center justify-center rounded-xl bg-primary text-white font-bold hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed">
+      {{ selectedTable ? 'View Table ' + selectedTable.number + ' Order' : 'Select a Table' }}
+    </button>
+  </footer>
+
+</div>

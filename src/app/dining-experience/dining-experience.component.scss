@@ -1,0 +1,16 @@
+/* Material Icons */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Radio styling */
+.radio-input {
+  /* Provide minimal equivalent styles instead of using @apply */
+  height: 1.25rem; /* h-5 */
+  width: 1.25rem; /* w-5 */
+  appearance: none;
+  border-radius: 9999px;
+  border-width: 2px;
+  background-color: transparent;
+  outline: none;
+}

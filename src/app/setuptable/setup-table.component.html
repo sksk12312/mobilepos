@@ -1,0 +1,95 @@
+<div class="flex min-h-screen flex-col bg-background-light dark:bg-background-dark font-display text-[#181211] dark:text-white">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-10 flex items-center p-4 pb-2 justify-between bg-background-light dark:bg-background-dark border-b border-gray-200/80 dark:border-gray-700/80">
+    <button (click)="goBack()" class="flex size-10 items-center justify-center">
+      <span class="material-symbols-outlined text-2xl">arrow_back</span>
+    </button>
+
+    <h1 class="text-lg font-bold flex-1 text-center">Set Up Your Table</h1>
+
+    <div class="w-10"></div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-grow pb-32">
+
+    <!-- Guest Counter -->
+    <div class="p-4">
+      <h2 class="text-lg font-semibold mb-4">How many guests?</h2>
+
+      <div class="flex items-center justify-center gap-6 rounded-xl bg-gray-100 dark:bg-gray-800 p-4">
+        <button (click)="decreaseGuests()"
+                class="flex h-12 w-12 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700 text-3xl font-medium">
+          -
+        </button>
+
+        <span class="text-6xl font-bold text-primary w-20 text-center">{{ guests }}</span>
+
+        <button (click)="increaseGuests()"
+                class="flex h-12 w-12 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700 text-3xl font-medium">
+          +
+        </button>
+      </div>
+    </div>
+
+    <!-- Customer Profiles -->
+    <div class="p-4">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-semibold">Customer Profiles</h2>
+
+        <button class="flex items-center gap-1 text-primary" (click)="addNewProfile()">
+          <span class="material-symbols-outlined text-xl">add_circle</span>
+          <span class="font-medium">Add New</span>
+        </button>
+      </div>
+
+      <div class="space-y-3">
+
+        <!-- Profile Card -->
+        <div *ngFor="let customer of customers"
+             (click)="selectCustomer(customer)"
+             class="flex items-center gap-4 rounded-xl border p-3 cursor-pointer"
+             [ngClass]="{
+                'border-primary bg-primary/10 dark:bg-primary/20': selectedCustomer.id === customer.id,
+                'border-gray-200 bg-background-light dark:border-gray-700 dark:bg-gray-800': selectedCustomer.id !== customer.id
+              }">
+
+          <img *ngIf="customer.image"
+               class="size-12 rounded-full object-cover"
+               [src]="customer.image"
+               [alt]="customer.name"/>
+
+          <div *ngIf="!customer.image"
+               class="flex size-12 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700">
+            <span class="material-symbols-outlined text-3xl text-gray-500 dark:text-gray-400">
+              person
+            </span>
+          </div>
+
+          <div class="flex-1">
+            <p class="font-semibold">{{ customer.name }}</p>
+            <p class="text-sm text-gray-600 dark:text-gray-300">{{ customer.description }}</p>
+          </div>
+
+          <span class="material-symbols-outlined text-2xl"
+                [ngClass]="selectedCustomer.id === customer.id ? 'filled text-primary' : 'text-gray-400 dark:text-gray-500'">
+            {{ selectedCustomer.id === customer.id ? 'check_circle' : 'radio_button_unchecked' }}
+          </span>
+
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer CTA -->
+  <footer class="fixed bottom-0 left-0 right-0 p-4 bg-background-light dark:bg-background-dark border-t border-gray-200/80 dark:border-gray-700/80">
+    <button (click)="startOrdering()"
+            class="w-full bg-primary text-white font-bold py-4 px-4 rounded-xl text-lg hover:bg-primary/90">
+      Start Ordering
+    </button>
+  </footer>
+
+</div>
