@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgFor, NgClass } from '@angular/common';
+import { RoutingGuardService } from '../routing-guard.service';
 
 @Component({
   selector: 'app-select-outlet',
@@ -17,6 +18,7 @@ export class SelectOutletComponent {
 
   outlets = [
     {
+      id: 'outlet-1',
       name: 'Downtown Central',
       distance: 1.2,
       address: '123 Main Street',
@@ -25,6 +27,7 @@ export class SelectOutletComponent {
       fav: false
     },
     {
+      id: 'outlet-2',
       name: 'Northside Plaza',
       distance: 3.5,
       address: '456 Oak Avenue',
@@ -33,6 +36,7 @@ export class SelectOutletComponent {
       fav: true
     },
     {
+      id: 'outlet-3',
       name: 'West End Express',
       distance: 5.1,
       address: '789 Pine Lane',
@@ -44,10 +48,11 @@ export class SelectOutletComponent {
 
   filteredOutlets = [...this.outlets];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private guardService: RoutingGuardService) {}
 
   goBack() {
-    this.router.navigate(['/dining-experience']);
+    this.guardService.resetRoutingState();
+    this.router.navigate(['/login']);
   }
 
   filterOutlets() {
@@ -64,8 +69,14 @@ export class SelectOutletComponent {
 
   selectOutlet(outlet: any) {
     console.log('Selected outlet:', outlet.name);
-    // Navigate to menu after selecting outlet
-    this.router.navigate(['/menu']);
+    
+    // Set selected outlet in routing guard
+    const success = this.guardService.setSelectedOutlet(outlet);
+    
+    if (success) {
+      // Navigate to dining area selection (next step in correct order)
+      this.router.navigate(['/dining-experience']);
+    }
   }
 
   statusColor(status: string) {

@@ -85,4 +85,47 @@
     </button>
   </div>
 
+  <!-- Restaurant Switch Warning Dialog -->
+  <div *ngIf="showRestaurantWarning" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-lg shadow-xl max-w-sm w-full p-6 animate-in fade-in zoom-in">
+      <!-- Warning Icon -->
+      <div class="flex justify-center mb-4">
+        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
+          <span class="material-symbols-outlined text-red-500 text-4xl">warning</span>
+        </div>
+      </div>
+
+      <!-- Title -->
+      <h2 class="text-xl font-bold text-center text-gray-900 mb-2">Switch Restaurant?</h2>
+
+      <!-- Description -->
+      <p class="text-center text-gray-600 text-sm mb-6">
+        You have items from <span class="font-bold">{{ cartService.currentRestaurant.value?.name || 'your previous restaurant' }}</span> in your cart.
+        <br class="my-2">
+        Adding items from <span class="font-bold">{{ pendingItem?.restaurant?.name }}</span> will clear your current cart.
+      </p>
+
+      <!-- Item Being Added -->
+      <div *ngIf="pendingItem" class="bg-gray-50 rounded-lg p-4 mb-6">
+        <p class="text-sm text-gray-600 mb-1">Item to add:</p>
+        <p class="font-bold text-gray-900">{{ pendingItem.item.name }}</p>
+        <p class="text-lg font-bold text-red-500 mt-1">${{ pendingItem.item.price.toFixed(2) }}</p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-3">
+        <button 
+          (click)="cancelSwitchRestaurant()"
+          class="flex-1 px-4 py-3 border border-gray-300 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-all">
+          Cancel
+        </button>
+        <button 
+          (click)="confirmSwitchRestaurant()"
+          class="flex-1 px-4 py-3 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-all">
+          Clear & Continue
+        </button>
+      </div>
+    </div>
+  </div>
+
 </div>
