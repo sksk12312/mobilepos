@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgFor, NgClass, CurrencyPipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { RoutingGuardService } from '../routing-guard.service';
 
 @Component({
   selector: 'app-select-table',
@@ -27,10 +28,10 @@ export class SelectTableComponent {
 
   selectedTable = this.tables.find(t => t.status === 'selected') || null;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private guardService: RoutingGuardService) {}
 
   goBack() {
-    this.router.navigate(['/setup-table']);
+    this.router.navigate(['/dining-experience']);
   }
 
   selectTable(table: any) {
@@ -42,9 +43,12 @@ export class SelectTableComponent {
 
     console.log('Viewing order for Table:', this.selectedTable);
 
-    // Route to menu and pass selected table as query param
-    this.router.navigate(['/menu'], {
-      queryParams: { table: this.selectedTable.number }
-    });
+    // Set selected table in routing guard
+    const success = this.guardService.setSelectedTable(this.selectedTable);
+    
+    if (success) {
+      // Navigate to menu (next step in correct order)
+      this.router.navigate(['/menu']);
+    }
   }
 }
