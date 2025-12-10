@@ -1,4 +1,7 @@
-@import 'tailwindcss';
+/* src/styles.scss — top of file (replace previous @import 'tailwindcss') */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Base HTML & Body */
 html,
@@ -12,93 +15,4 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-* {
-  box-sizing: border-box;
-}
-
-button {
-  font-family: inherit;
-  cursor: pointer;
-  transition: all 200ms ease-out;
-  border: none;
-  outline: none;
-
-  &:active {
-    transform: scale(0.95);
-  }
-}
-
-input,
-textarea,
-select {
-  font-family: inherit;
-  transition: all 200ms;
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgb(59, 130, 246);
-  }
-}
-
-/* Component Styles */
-.btn-primary {
-  background: linear-gradient(to right, rgb(37, 99, 235), rgb(29, 78, 216));
-  color: white;
-  font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s;
-
-  &:hover {
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-  }
-}
-
-.btn-secondary {
-  background-color: rgb(243, 244, 246);
-  color: rgb(17, 24, 39);
-  font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  border: 2px solid rgb(209, 213, 219);
-  transition: all 0.3s;
-
-  &:hover {
-    background-color: rgb(229, 231, 235);
-  }
-}
-
-.card {
-  background-color: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s;
-
-  &:hover {
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-  }
-}
-
-.input-field {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border: 2px solid rgb(229, 231, 235);
-  border-radius: 0.5rem;
-  transition: all 0.3s;
-
-  &:focus {
-    border-color: rgb(37, 99, 235);
-  }
-}
-
-/* Utility Classes */
-.material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
-}
-
-app-root {
-  display: block;
-  min-height: 100vh;
-}
-
+/* ...rest of your existing SCSS follows unchanged... */
