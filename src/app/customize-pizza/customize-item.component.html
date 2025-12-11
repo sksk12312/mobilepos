@@ -1,117 +1,131 @@
-<div class="flex min-h-screen flex-col bg-background-light dark:bg-background-dark font-display">
+<div class="min-h-screen flex flex-col bg-white">
 
   <!-- Header -->
-  <header class="sticky top-0 z-10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm">
-    <div class="flex items-center p-4 justify-between">
-      <button (click)="goBack()"
-        class="text-text-primary-light dark:text-text-primary-dark flex size-12 items-center justify-center -ml-3">
-        <span class="material-symbols-outlined">arrow_back</span>
+  <header class="sticky top-0 z-20 bg-white border-b border-gray-200 shadow-sm">
+    <div class="flex items-center px-4 py-4 justify-between">
+      <button (click)="goBack()" class="text-gray-900 flex items-center justify-center w-10 h-10 hover:bg-gray-100 rounded-lg transition">
+        <span class="material-symbols-outlined text-2xl">arrow_back</span>
       </button>
-
-      <h1 class="text-text-primary-light dark:text-text-primary-dark text-lg font-bold flex-1 text-center">
-        Customize Pizza
-      </h1>
-
-      <button class="text-text-primary-light dark:text-text-primary-dark flex size-12 items-center justify-center -mr-3">
-        <span class="material-symbols-outlined">favorite</span>
-      </button>
+      <h1 class="text-lg font-bold text-gray-900">Customize Pizza</h1>
+      <div class="flex items-center gap-3">
+        <div class="text-right">
+          <p class="text-xs text-gray-600" *ngIf="waiterName">{{ waiterName }}</p>
+        </div>
+        <button (click)="toggleFavorite()" class="text-gray-900 flex items-center justify-center w-10 h-10 hover:bg-gray-100 rounded-lg transition">
+          <span class="material-symbols-outlined text-2xl" [ngClass]="isFavorite ? 'text-red-500' : ''">
+            {{ isFavorite ? 'favorite' : 'favorite_border' }}
+          </span>
+        </button>
+        <button (click)="goToTableSelect()" class="text-gray-900 flex items-center justify-center w-10 h-10 hover:bg-gray-100 rounded-lg transition relative">
+          <span class="material-symbols-outlined text-2xl">table_restaurant</span>
+          <div *ngIf="selectedTable" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
+            {{ selectedTable }}
+          </div>
+        </button>
+      </div>
     </div>
   </header>
 
-  <main class="flex-1 pb-32">
-    <div class="px-4">
-      <!-- Image -->
-      <div class="aspect-[4/3] w-full rounded-xl bg-cover bg-center bg-no-repeat"
-        [style.background-image]="'url(' + itemImage + ')'">
-      </div>
-
-      <div class="mt-4">
-        <h2 class="text-2xl font-bold text-text-primary-light dark:text-text-primary-dark">
-          {{ itemName }}
-        </h2>
-        <p class="text-text-secondary-light dark:text-text-secondary-dark mt-2">
-          {{ itemDescription }}
-        </p>
+  <!-- Main Content -->
+  <main class="flex-1 pb-40">
+    <!-- Pizza Image -->
+    <div class="px-4 pt-6 pb-4">
+      <div class="w-full h-64 rounded-2xl bg-gray-300 overflow-hidden" 
+        [style.background-image]="'url(' + itemImage + ')'"
+        [style.background-size]="'cover'"
+        [style.background-position]="'center'">
       </div>
     </div>
 
-    <!-- Crust Options -->
-    <div class="mt-6 px-4">
-      <div class="flex items-center justify-between">
-        <h3 class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark">Crust Type</h3>
-        <div class="flex h-6 items-center rounded-full bg-primary/20 px-2.5">
-          <p class="text-primary text-xs font-medium">Required</p>
-        </div>
-      </div>
-
-      <div class="mt-3 flex flex-col gap-3">
-        <label class="flex items-center justify-between bg-surface-light dark:bg-surface-dark px-4 py-3 rounded-lg">
-          <div class="flex items-center gap-4">
-            <input type="radio" name="crust" value="thin" [(ngModel)]="selectedCrust" class="form-radio size-5 border-2 border-primary text-primary">
-            <span class="text-text-primary-light dark:text-text-primary-dark">Thin Crust</span>
-          </div>
-          <p class="font-medium text-text-primary-light dark:text-text-primary-dark">Included</p>
-        </label>
-
-        <label class="flex items-center justify-between bg-surface-light dark:bg-surface-dark px-4 py-3 rounded-lg">
-          <div class="flex items-center gap-4">
-            <input type="radio" name="crust" value="stuffed" [(ngModel)]="selectedCrust" class="form-radio size-5 border-2 text-primary">
-            <span class="text-text-primary-light dark:text-text-primary-dark">Cheese-Stuffed Crust</span>
-          </div>
-          <p class="font-medium text-text-primary-light dark:text-text-primary-dark">+ $3.00</p>
-        </label>
-      </div>
+    <!-- Pizza Details -->
+    <div class="px-4 pb-6 border-b border-gray-200">
+      <h2 class="text-3xl font-bold text-gray-900 mb-2">{{ itemName }}</h2>
+      <p class="text-gray-600 text-base leading-relaxed">{{ itemDescription }}</p>
     </div>
 
-    <!-- Toppings -->
-    <div class="mt-6 px-4">
-      <div class="flex items-center justify-between">
-        <h3 class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark">Toppings</h3>
-        <div class="flex h-6 items-center rounded-full bg-text-secondary-light/20 dark:bg-text-secondary-dark/20 px-2.5">
-          <p class="text-text-secondary-light dark:text-text-secondary-dark text-xs font-medium">Optional</p>
+    <!-- Customization Options -->
+    <div class="space-y-8 px-4 py-6">
+      
+      <!-- Crust Type Section -->
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-xl font-bold text-gray-900">Crust Type</h3>
+          <span class="inline-flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-semibold">
+            Required
+          </span>
         </div>
-      </div>
 
-      <div class="mt-3 flex flex-col gap-1">
-        <label *ngFor="let topping of toppings" class="flex items-center justify-between bg-surface-light dark:bg-surface-dark px-4 py-3">
-          <span class="text-text-primary-light dark:text-text-primary-dark">{{ topping.name }}</span>
+        <div class="space-y-3">
+          <label *ngFor="let crust of crusts" class="flex items-center justify-between p-4 bg-white border-2 rounded-xl cursor-pointer transition-all"
+            [ngClass]="selectedCrust === crust.id ? 'border-red-500 bg-red-50' : 'border-gray-200 hover:border-gray-300'">
+            
+            <div class="flex items-center gap-4 flex-1">
+              <input type="radio" [value]="crust.id" [(ngModel)]="selectedCrust" 
+                class="w-5 h-5 accent-red-500 cursor-pointer" />
+              <label class="text-gray-900 font-semibold cursor-pointer">{{ crust.name }}</label>
+            </div>
 
-          <div class="flex items-center gap-3">
-            <span class="font-medium text-text-primary-light dark:text-text-primary-dark">
-              + ${{ topping.price }}
+            <span class="text-gray-900 font-semibold" [ngClass]="crust.included ? 'text-green-600' : ''">
+              {{ crust.included ? 'Included' : '+ $' + crust.price.toFixed(2) }}
             </span>
+          </label>
+        </div>
+      </div>
 
-            <input type="checkbox" [(ngModel)]="topping.selected"
-              class="form-checkbox size-6 rounded-md border-2">
-          </div>
-        </label>
+      <!-- Toppings Section -->
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-xl font-bold text-gray-900">Toppings</h3>
+          <span class="inline-flex items-center gap-1 px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-semibold">
+            Optional
+          </span>
+        </div>
+
+        <div class="space-y-1">
+          <label *ngFor="let topping of toppings" class="flex items-center justify-between p-4 bg-white border border-gray-200 cursor-pointer hover:border-gray-300 transition-all"
+            [ngClass]="topping.selected ? 'bg-orange-50 border-orange-200' : ''">
+            
+            <div class="flex items-center gap-4 flex-1">
+              <input type="checkbox" [(ngModel)]="topping.selected" 
+                class="w-5 h-5 accent-red-500 cursor-pointer rounded" />
+              <label class="text-gray-900 font-medium cursor-pointer">{{ topping.name }}</label>
+            </div>
+
+            <div class="flex items-center gap-4">
+              <span class="text-gray-900 font-semibold">+ ${{ topping.price.toFixed(2) }}</span>
+              <div class="w-5 h-5 rounded border-2 border-gray-300" 
+                [ngClass]="topping.selected ? 'bg-red-500 border-red-500' : ''">
+              </div>
+            </div>
+          </label>
+        </div>
       </div>
     </div>
-
   </main>
 
-  <!-- Footer -->
-  <footer class="fixed bottom-0 left-0 right-0 bg-surface-light dark:bg-surface-dark shadow p-4">
+  <!-- Footer - Quantity and Add Button -->
+  <footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-lg">
     <div class="flex items-center justify-between gap-4">
-      <div class="flex items-center gap-4">
-        <button (click)="decreaseQty()" class="flex size-10 items-center justify-center rounded-full bg-primary/20 text-primary">
-          <span class="material-symbols-outlined text-2xl">remove</span>
+      <!-- Quantity Controls -->
+      <div class="flex items-center gap-3">
+        <button (click)="decreaseQty()" 
+          [disabled]="qty <= 1"
+          class="w-12 h-12 rounded-full bg-red-100 text-red-500 hover:bg-red-200 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center font-bold text-xl">
+          −
         </button>
-
-        <span class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark w-4 text-center">
-          {{ qty }}
-        </span>
-
-        <button (click)="increaseQty()" class="flex size-10 items-center justify-center rounded-full bg-primary/20 text-primary">
-          <span class="material-symbols-outlined text-2xl">add</span>
+        <span class="text-gray-900 font-bold text-lg min-w-8 text-center">{{ qty }}</span>
+        <button (click)="increaseQty()" 
+          class="w-12 h-12 rounded-full bg-red-100 text-red-500 hover:bg-red-200 transition flex items-center justify-center font-bold text-xl">
+          +
         </button>
       </div>
 
-      <button (click)="addToCart()" class="flex h-12 flex-1 items-center justify-center rounded-full bg-primary px-6">
-        <span class="text-white font-bold">
-          Add to Cart - ${{ totalPrice.toFixed(2) }}
-        </span>
+      <!-- Add to Cart Button -->
+      <button (click)="addToCart()"
+        class="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-full transition-all active:scale-95 shadow-md">
+        Add to Cart - ${{ totalPrice.toFixed(2) }}
       </button>
     </div>
   </footer>
+
 </div>

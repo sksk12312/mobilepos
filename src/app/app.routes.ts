@@ -19,6 +19,11 @@ export const routes: Routes = [
     loadComponent: () => import('./dining-experience/dining-experience.component').then(m => m.DiningExperienceComponent) 
   },
   { 
+    path: 'customer-details', 
+    canActivate: [AuthGuard],
+    loadComponent: () => import('./customer-details/customer-details.component').then(m => m.CustomerDetailsComponent) 
+  },
+  { 
     path: 'setup-table', 
     canActivate: [AuthGuard],
     loadComponent: () => import('./setuptable/setup-table.component').then(m => m.SetupTableComponent) 

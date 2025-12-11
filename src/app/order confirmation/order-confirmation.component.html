@@ -1,40 +1,132 @@
-<!-- src/app/order-confirmation/order-confirmation.html -->
-<section class="container py-6">
-  <h1 class="text-2xl font-bold mb-4">Order Confirmation</h1>
-
-  <p *ngIf="lastOrder?.items?.length; else empty">
-    Thank you — your order has been placed. Summary:
-  </p>
-
-  <ng-template #empty>
-    <p>No recent order found.</p>
-  </ng-template>
-
-  <div *ngIf="lastOrder?.items?.length">
-    <ul class="space-y-3">
-      <li *ngFor="let it of lastOrder.items" class="flex justify-between">
-        <div>
-          <div class="font-semibold">{{ it.name }} x{{ it.qty }}</div>
-          <div class="text-sm text-gray-500" *ngIf="it.notes">{{ it.notes }}</div>
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col">
+  <!-- Header -->
+  <header class="sticky top-0 z-20 bg-white border-b border-gray-200 shadow-sm">
+    <div class="flex items-center px-4 py-4 justify-between">
+      <h1 class="text-lg font-bold text-gray-900">Order Confirmation</h1>
+      <div class="flex items-center gap-3">
+        <div class="text-right">
+          <p class="text-xs text-gray-600" *ngIf="waiterName">{{ waiterName }}</p>
         </div>
-        <div class="font-medium">${{ (it.price * it.qty) | number:'1.2-2' }}</div>
-      </li>
-    </ul>
-
-    <div class="mt-6">
-      <div class="flex justify-between">
-        <div>Subtotal</div>
-        <div>${{ lastOrder.subtotal | number:'1.2-2' }}</div>
-      </div>
-      <div class="flex justify-between">
-        <div>Taxes & Fees</div>
-        <div>${{ lastOrder.tax | number:'1.2-2' }}</div>
-      </div>
-      <hr class="my-3">
-      <div class="flex justify-between font-bold">
-        <div>Total</div>
-        <div>${{ lastOrder.total | number:'1.2-2' }}</div>
+        <button (click)="goToTableSelect()" class="text-gray-900 flex items-center justify-center w-10 h-10 hover:bg-gray-100 rounded-lg transition relative">
+          <span class="material-symbols-outlined text-2xl">table_restaurant</span>
+          <div *ngIf="selectedTable" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
+            {{ selectedTable }}
+          </div>
+        </button>
       </div>
     </div>
+  </header>
+
+  <!-- Content -->
+  <main class="flex-1 px-4 py-6 pb-32 flex items-center justify-center">
+    <!-- Bill Container -->
+    <div class="w-full max-w-md bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+      
+      <!-- Success Header -->
+      <div class="bg-gradient-to-r from-green-50 to-emerald-50 border-b border-green-200 p-6 text-center">
+        <div class="flex justify-center mb-3">
+          <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center">
+            <span class="material-symbols-outlined text-green-600 text-3xl">check_circle</span>
+          </div>
+        </div>
+        <h1 class="text-2xl font-bold text-gray-900 mb-1">Order Confirmed!</h1>
+        <p class="text-sm text-gray-600">Your order has been successfully placed</p>
+      </div>
+
+      <!-- Bill Content -->
+      <div class="p-6 space-y-6">
+        
+        <!-- Restaurant & Order Info -->
+        <div class="border-b border-gray-200 pb-4 space-y-3">
+          <div class="flex justify-between text-sm">
+            <span class="text-gray-600">Restaurant</span>
+            <span class="font-semibold text-gray-900">{{ restaurantName }}</span>
+          </div>
+          <div class="flex justify-between text-sm">
+            <span class="text-gray-600">Waiter</span>
+            <span class="font-semibold text-gray-900">{{ waiterName || 'Not assigned' }}</span>
+          </div>
+          <div class="flex justify-between text-sm">
+            <span class="text-gray-600">Table</span>
+            <span class="font-semibold text-gray-900">Table {{ selectedTable }}</span>
+          </div>
+          <div class="flex justify-between text-sm">
+            <span class="text-gray-600">Order ID</span>
+            <span class="font-semibold text-gray-900 text-xs tracking-wide">{{ orderId }}</span>
+          </div>
+          <div class="flex justify-between text-sm">
+            <span class="text-gray-600">Order Time</span>
+            <span class="font-semibold text-gray-900">{{ orderTime }}</span>
+          </div>
+        </div>
+
+        <!-- Ordered Items -->
+        <div *ngIf="lastOrder && lastOrder.items.length > 0" class="border-b border-gray-200 pb-4">
+          <h3 class="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">Items</h3>
+          <div class="space-y-2">
+            <div *ngFor="let item of lastOrder.items" class="text-sm">
+              <div class="flex justify-between mb-1">
+                <span class="text-gray-900 font-medium">{{ item.name }}</span>
+                <span class="text-gray-900 font-semibold">${{ (item.price * item.qty).toFixed(2) }}</span>
+              </div>
+              <div class="flex justify-between text-xs text-gray-500">
+                <span>Qty: {{ item.qty }} × ${{ item.price.toFixed(2) }}</span>
+              </div>
+              
+              <!-- Instructions -->
+              <div *ngIf="item.instructions && item.instructions.length > 0" class="text-xs text-gray-600 mt-1 pl-2 border-l-2 border-blue-300">
+                <p>{{ item.instructions.join(', ') }}</p>
+              </div>
+              
+              <!-- Customization Notes -->
+              <div *ngIf="item.notes" class="text-xs text-gray-600 mt-1 pl-2 border-l-2 border-orange-300">
+                <p>{{ item.notes }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment Summary -->
+        <div class="space-y-2">
+          <div class="flex justify-between text-sm">
+            <span class="text-gray-600">Subtotal</span>
+            <span class="text-gray-900">${{ (lastOrder?.subtotal ?? 0).toFixed(2) }}</span>
+          </div>
+          <div class="flex justify-between text-sm">
+            <span class="text-gray-600">Tax</span>
+            <span class="text-gray-900">${{ (lastOrder?.tax ?? 0).toFixed(2) }}</span>
+          </div>
+          <div class="flex justify-between text-sm text-gray-600">
+            <span>Payment Method</span>
+            <span class="capitalize text-gray-900">{{ paymentMethod }}</span>
+          </div>
+          
+          <!-- Total Amount -->
+          <div class="border-t-2 border-gray-200 pt-3 flex justify-between">
+            <span class="font-bold text-gray-900">Total</span>
+            <span class="font-bold text-lg text-red-600">${{ (lastOrder?.total ?? 0).toFixed(2) }}</span>
+          </div>
+        </div>
+
+        <!-- Info Message -->
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 text-center">
+          <p class="text-xs text-blue-900">
+            <span class="font-semibold block mb-1">Your order is being prepared</span>
+            <span class="text-blue-800">The waiter will bring it to your table shortly</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bottom Actions -->
+  <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-4">
+    <button 
+      (click)="orderAgain()"
+      class="w-full bg-red-500 text-white font-semibold py-3 rounded-lg hover:bg-red-600 transition active:scale-95">
+      Order Again
+    </button>
   </div>
-</section>
+</div>
+
+

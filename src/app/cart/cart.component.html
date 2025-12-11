@@ -1,80 +1,108 @@
-<div class="min-h-screen flex flex-col bg-gray-50">
+<div class="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 to-gray-100">
 
   <!-- Header -->
-  <header class="sticky top-0 z-20 bg-white border-b border-gray-200 px-4 py-4 flex items-center justify-between">
-    <button (click)="goBack()" class="text-gray-900 flex items-center justify-center w-10 h-10">
-      <span class="material-symbols-outlined text-2xl">arrow_back</span>
-    </button>
-    <h1 class="text-lg font-bold flex-1 text-center text-gray-900">Your Cart</h1>
-    <div class="w-10"></div>
+  <header class="sticky top-0 z-20 bg-white border-b border-gray-200 shadow-sm">
+    <div class="flex items-center px-4 py-4 justify-between">
+      <button (click)="goBack()" class="text-gray-900 flex items-center justify-center w-10 h-10 hover:bg-gray-100 rounded-lg transition">
+        <span class="material-symbols-outlined text-2xl">arrow_back</span>
+      </button>
+      <h1 class="text-lg font-bold text-gray-900">Your Cart</h1>
+      <div class="flex items-center gap-3">
+        <div class="text-right">
+          <p class="text-xs text-gray-600" *ngIf="waiterName">{{ waiterName }}</p>
+        </div>
+        <button (click)="goToTableSelect()" class="text-gray-900 flex items-center justify-center w-10 h-10 hover:bg-gray-100 rounded-lg transition relative">
+          <span class="material-symbols-outlined text-2xl">table_restaurant</span>
+          <div *ngIf="selectedTable" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
+            {{ selectedTable }}
+          </div>
+        </button>
+      </div>
+    </div>
   </header>
 
   <main class="flex-1 pb-40">
     <!-- Cart Items -->
-    <div class="px-4 py-4 space-y-3">
-      <div *ngIf="cartItems.length === 0" class="text-center py-8 text-gray-600">
-        <p class="text-lg">Your cart is empty</p>
+    <div class="px-4 py-6 space-y-4">
+      <div *ngIf="cartItems.length === 0" class="text-center py-16">
+        <span class="material-symbols-outlined text-6xl text-gray-300 block mb-4">shopping_bag</span>
+        <p class="text-lg text-gray-600">Your cart is empty</p>
+        <p class="text-sm text-gray-500 mt-2">Add items to get started</p>
       </div>
 
-      <div *ngFor="let item of cartItems" class="bg-white rounded-lg border border-gray-200 p-4 flex gap-4">
+      <div *ngFor="let item of cartItems" class="bg-white rounded-xl border border-gray-200 p-4 flex gap-4 shadow-sm hover:shadow-md transition-all">
         <!-- Image -->
-        <div class="w-20 h-20 rounded-lg bg-gray-300 flex-shrink-0 bg-cover bg-center"
+        <div class="w-24 h-24 rounded-lg bg-gray-300 flex-shrink-0 bg-cover bg-center border border-gray-200"
              [style.background-image]="'url(' + item.image + ')'">
         </div>
 
         <!-- Details -->
         <div class="flex-1">
-          <p class="font-bold text-gray-900">{{ item.name }}</p>
-          <p class="text-sm text-gray-600 line-clamp-2 mt-1">{{ item.description }}</p>
-          <p class="font-bold text-gray-900 mt-2">${{ item.price.toFixed(2) }}</p>
+          <p class="font-bold text-gray-900 text-sm">{{ item.name }}</p>
+          <p class="font-bold text-red-600 mt-2 text-base">${{ item.price.toFixed(2) }}</p>
+          
+          <!-- Instructions Display -->
+          <div *ngIf="item.instructions && item.instructions.length > 0" class="mt-2">
+            <p class="text-xs text-gray-600">
+              <span class="font-semibold">Instructions:</span> {{ item.instructions.join(', ') }}
+            </p>
+          </div>
+
+          <!-- Notes Display (for customizations like pizza crusts) -->
+          <div *ngIf="item.notes" class="mt-2">
+            <p class="text-xs text-gray-600">
+              <span class="font-semibold">Customization:</span> {{ item.notes }}
+            </p>
+          </div>
         </div>
 
         <!-- Quantity Controls -->
         <div class="flex flex-col items-end justify-between">
-          <button (click)="removeItem(item)" class="text-red-500 hover:text-red-600">
-            <span class="material-symbols-outlined">delete</span>
+          <button (click)="removeItem(item)" class="text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded transition">
+            <span class="material-symbols-outlined text-xl">delete_outline</span>
           </button>
-          <div class="flex items-center gap-2 border border-gray-300 rounded">
-            <button (click)="decreaseQty(item)" class="px-2 py-1 text-gray-600 hover:bg-gray-100">−</button>
-            <span class="px-3 font-medium">{{ item.quantity }}</span>
-            <button (click)="increaseQty(item)" class="px-2 py-1 text-gray-600 hover:bg-gray-100">+</button>
+          <div class="flex items-center gap-2 border border-gray-300 rounded-lg overflow-hidden bg-white">
+            <button (click)="decreaseQty(item)" class="px-2 py-1 text-gray-600 hover:bg-gray-100 transition text-base font-bold">−</button>
+            <span class="px-3 py-1 font-bold text-gray-900 min-w-8 text-center">{{ item.qty }}</span>
+            <button (click)="increaseQty(item)" class="px-2 py-1 text-gray-600 hover:bg-gray-100 transition text-base font-bold">+</button>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Special Instructions -->
-    <div class="px-4 py-4">
-      <p class="font-bold text-gray-900 mb-2">Special Instructions</p>
+    <div class="px-4 py-6 bg-white border-y border-gray-200">
+      <label class="block font-bold text-gray-900 mb-3 text-base">Special Instructions</label>
       <textarea
         [(ngModel)]="specialInstructions"
         placeholder="Any allergies or special requests?"
-        class="w-full h-24 rounded-lg border border-gray-300 p-3 text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500">
+        class="w-full h-20 rounded-lg border border-gray-300 p-3 text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none">
       </textarea>
     </div>
 
     <!-- Totals -->
-    <div class="px-4 py-4 border-t border-gray-200 space-y-2">
-      <div class="flex justify-between text-gray-600">
+    <div class="px-4 py-6 space-y-3 bg-white">
+      <div class="flex justify-between text-gray-700 font-medium">
         <p>Subtotal</p>
         <p>${{ subtotal.toFixed(2) }}</p>
       </div>
-      <div class="flex justify-between text-gray-600">
+      <div class="flex justify-between text-gray-700 font-medium border-b border-gray-200 pb-3">
         <p>Taxes & Fees</p>
         <p>${{ taxes.toFixed(2) }}</p>
       </div>
-      <div class="flex justify-between font-bold text-gray-900 pt-2 border-t border-gray-200">
+      <div class="flex justify-between font-bold text-gray-900 text-lg">
         <p>Total</p>
-        <p>${{ total.toFixed(2) }}</p>
+        <p class="text-red-600">${{ total.toFixed(2) }}</p>
       </div>
     </div>
   </main>
 
   <!-- Proceed Button -->
-  <footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
+  <footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-lg">
     <button (click)="goToPayment()"
-      class="w-full bg-red-500 text-white font-bold py-4 rounded-lg hover:bg-red-600 transition-all">
-      Proceed to Payment
+      [disabled]="cartItems.length === 0"
+      class="w-full bg-gradient-to-r from-red-500 to-red-600 text-white font-bold py-4 rounded-lg hover:from-red-600 hover:to-red-700 transition-all active:scale-95 shadow-md disabled:opacity-50 disabled:cursor-not-allowed">
+      Proceed to Payment • ${{ total.toFixed(2) }}
     </button>
   </footer>
 

@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CartService, CartItem as ServiceCartItem, Restaurant } from '../cart.service';
+import { CartService, CartItem } from '../services/cart.service';
+import { SessionService } from '../services/session.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -14,22 +15,22 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./cart.component.scss'],
 })
 export class CartComponent implements OnInit, OnDestroy {
-  cartItems: ServiceCartItem[] = [];
-  restaurant: Restaurant | null = null;
+  cartItems: CartItem[] = [];
   specialInstructions = '';
+  waiterName = '';
+  selectedTable: number | null = null;
   private destroy$ = new Subject<void>();
 
-  constructor(private router: Router, private cartService: CartService) {}
+  constructor(private router: Router, private cartService: CartService, private sessionService: SessionService) {}
 
   ngOnInit() {
-    // Subscribe to cart items
-    this.cartService.cartItems$.pipe(takeUntil(this.destroy$)).subscribe(items => {
-      this.cartItems = items;
-    });
+    // Load session data
+    this.waiterName = this.sessionService.getWaiterName();
+    this.selectedTable = this.sessionService.getSelectedTable();
 
-    // Subscribe to current restaurant
-    this.cartService.currentRestaurant$.pipe(takeUntil(this.destroy$)).subscribe(restaurant => {
-      this.restaurant = restaurant;
+    // Subscribe to cart items
+    this.cartService.itemsObservable.pipe(takeUntil(this.destroy$)).subscribe((items: CartItem[]) => {
+      this.cartItems = items;
     });
   }
 
@@ -39,7 +40,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   get subtotal(): number {
-    return this.cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    return this.cartItems.reduce((sum, item) => sum + item.price * item.qty, 0);
   }
 
   get taxes(): number {
@@ -50,22 +51,26 @@ export class CartComponent implements OnInit, OnDestroy {
     return this.subtotal + this.taxes;
   }
 
-  increaseQty(item: ServiceCartItem) {
-    this.cartService.updateQuantity(item.id, item.quantity + 1);
+  increaseQty(item: CartItem) {
+    this.cartService.updateQuantity(item.id, item.qty + 1);
   }
 
-  decreaseQty(item: ServiceCartItem) {
-    if (item.quantity > 1) {
-      this.cartService.updateQuantity(item.id, item.quantity - 1);
+  decreaseQty(item: CartItem) {
+    if (item.qty > 1) {
+      this.cartService.updateQuantity(item.id, item.qty - 1);
     }
   }
 
-  removeItem(item: ServiceCartItem) {
+  removeItem(item: CartItem) {
     this.cartService.removeItem(item.id);
   }
 
   goBack() {
     this.router.navigate(['/menu']);
+  }
+
+  goToTableSelect() {
+    this.router.navigate(['/select-table']);
   }
 
   goToPayment() {

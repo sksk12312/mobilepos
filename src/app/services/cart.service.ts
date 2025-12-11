@@ -9,6 +9,7 @@ export interface CartItem {
   qty: number;
   notes?: string;
   image?: string;
+  instructions?: string[];
 }
 
 export interface CartSnapshot {

@@ -1,7 +1,5 @@
-/* src/styles.scss — top of file (replace previous @import 'tailwindcss') */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Import Tailwind CSS */
+@use "tailwindcss" as *;
 
 /* Base HTML & Body */
 html,

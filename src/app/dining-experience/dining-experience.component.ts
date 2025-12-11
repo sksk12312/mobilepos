@@ -27,8 +27,8 @@ export class DiningExperienceComponent {
     const success = this.guardService.setSelectedDiningArea(this.selectedExperience);
     
     if (success) {
-      // Navigate to table selection (next step in correct order)
-      this.router.navigate(['/select-table']);
+      // Navigate to customer details (next step in correct order)
+      this.router.navigate(['/customer-details']);
     }
   }
 }

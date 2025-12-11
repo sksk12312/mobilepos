@@ -1,50 +1,44 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AuthService } from '../auth.service';
 import { RoutingGuardService } from '../routing-guard.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
   email = '';
   password = '';
-  passwordVisible = false;
+  showPassword = false;
+  isLoading = false;
+  error = '';
 
-  constructor(private router: Router, private guardService: RoutingGuardService) {}
+  constructor(private router: Router, private authService: AuthService, private guardService: RoutingGuardService) {}
 
-  goBack() {
-    this.router.navigate(['/']);
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 
-  togglePassword() {
-    this.passwordVisible = !this.passwordVisible;
-  }
+  onSubmit() {
+    if (!this.email || !this.password) {
+      this.error = 'Please fill in all fields';
+      return;
+    }
 
-  login() {
-    console.log('Logging in with:', this.email, this.password);
-    
-    // Mark user as logged in
-    this.guardService.setLoggedIn();
-    
-    // Navigate to outlet selection (next step in correct order)
-    this.router.navigate(['/select-outlet']);
-  }
+    this.isLoading = true;
+    this.error = '';
 
-  // Social login methods
-  loginWithGoogle() {
-    console.log('Logging in with Google');
-    this.guardService.setLoggedIn();
-    this.router.navigate(['/select-outlet']);
-  }
-
-  loginWithFacebook() {
-    console.log('Logging in with Facebook');
-    this.guardService.setLoggedIn();
-    this.router.navigate(['/select-outlet']);
+    setTimeout(() => {
+      this.authService.login(this.email, this.password);
+      this.guardService.setLoggedIn();
+      this.isLoading = false;
+      this.router.navigate(['/select-outlet']);
+    }, 1500);
   }
 }

@@ -1,50 +1,87 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CartService, CartSnapshot } from '../services/cart.service';
+import { SessionService } from '../services/session.service';
 
 @Component({
   selector: 'app-payment',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './payment.component.html',
   styleUrls: ['./payment.component.scss']
 })
-export class PaymentComponent {
-  // In a real app, amount should come from CartService; here it's passed or set statically
-  amount = 42.09;               // example amount; replace with dynamic value
-  description = 'Order payment';
+export class PaymentComponent implements OnInit {
+  paymentMethod: 'card' | 'cash' = 'card';
+  cartSnapshot: CartSnapshot | null = null;
+  processing = false;
+  error = '';
+  waiterName = '';
+  selectedTable: number | null = null;
 
+  // Card details
   cardName = '';
   cardNumber = '';
-  expiry = '';
-  cvc = '';
-  processing = false;
+  cardExpiry = '';
+  cardCvc = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private cartService: CartService, private sessionService: SessionService) {}
+
+  ngOnInit() {
+    this.cartSnapshot = this.cartService.getCartSnapshot();
+    this.waiterName = this.sessionService.getWaiterName();
+    this.selectedTable = this.sessionService.getSelectedTable();
+  }
 
   goBack() {
     this.router.navigate(['/cart']);
   }
 
-  pay() {
-    if (!this.cardName || !this.cardNumber || !this.expiry || !this.cvc) {
-      alert('Please fill card details.');
+  goToTableSelect() {
+    this.router.navigate(['/select-table']);
+  }
+
+  selectPaymentMethod(method: 'card' | 'cash') {
+    this.paymentMethod = method;
+    this.error = '';
+  }
+
+  processPayment() {
+    if (!this.cartSnapshot) {
+      this.error = 'Cart data not found';
       return;
     }
 
-    // simulate processing
+    if (this.paymentMethod === 'card') {
+      if (!this.cardName || !this.cardNumber || !this.cardExpiry || !this.cardCvc) {
+        this.error = 'Please fill in all card details';
+        return;
+      }
+      if (this.cardNumber.replace(/\s/g, '').length < 13) {
+        this.error = 'Invalid card number';
+        return;
+      }
+    }
+
     this.processing = true;
+    this.error = '';
+
     setTimeout(() => {
       this.processing = false;
-
-      // Generate a sample order id and timestamp (in real app get from backend)
-      const orderId = 'A' + Math.random().toString(36).substring(2, 9).toUpperCase();
-      const timestamp = new Date().toISOString();
-
-      // navigate to order confirmation and pass info via state
+      const orderId = 'ORD' + Math.random().toString(36).substring(2, 9).toUpperCase();
+      
       this.router.navigate(['/order-confirmation'], {
-        state: { orderId, paidAmount: this.amount, paidAt: timestamp }
+        state: { 
+          orderId, 
+          totalAmount: this.cartSnapshot?.total,
+          paymentMethod: this.paymentMethod,
+          cartSnapshot: this.cartSnapshot
+        }
       });
-    }, 1000); // simulate 1s processing
+      
+      this.cartService.clearCart();
+    }, 1500);
   }
 }
+

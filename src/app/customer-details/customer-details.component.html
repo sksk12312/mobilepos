@@ -1,0 +1,138 @@
+<div class="min-h-screen bg-gray-50 flex flex-col">
+  <!-- Header -->
+  <header class="sticky top-0 z-20 bg-white border-b border-gray-200 shadow-sm">
+    <div class="flex items-center px-4 py-4 justify-between">
+      <button (click)="goBack()" class="text-gray-900 flex items-center justify-center w-10 h-10 hover:bg-gray-100 rounded-lg transition">
+        <span class="material-symbols-outlined text-2xl">arrow_back</span>
+      </button>
+      <h1 class="text-xl font-bold flex-1 text-center text-gray-900">Set Up Your Table</h1>
+      <div class="w-10"></div>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="flex-1 px-6 py-8 pb-32">
+    <!-- Guest Counter Section -->
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold text-gray-900 mb-8">How many guests?</h2>
+      
+      <div class="flex items-center justify-center gap-8">
+        <!-- Minus Button -->
+        <button 
+          (click)="decreaseGuests()"
+          [disabled]="guestCount <= 1"
+          class="w-16 h-16 rounded-full bg-gray-200 text-gray-700 font-bold text-3xl hover:bg-gray-300 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center">
+          −
+        </button>
+
+        <!-- Guest Count Display -->
+        <div class="text-6xl font-bold text-red-500 min-w-24 text-center">
+          {{ guestCount }}
+        </div>
+
+        <!-- Plus Button -->
+        <button 
+          (click)="increaseGuests()"
+          [disabled]="guestCount >= 20"
+          class="w-16 h-16 rounded-full bg-gray-200 text-gray-700 font-bold text-3xl hover:bg-gray-300 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center">
+          +
+        </button>
+      </div>
+    </div>
+
+    <!-- Customer Profiles Section -->
+    <div>
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-xl font-bold text-gray-900">Customer Profiles</h3>
+        <button class="flex items-center gap-2 text-red-500 font-semibold hover:text-red-600 transition">
+          <span class="material-symbols-outlined">add_circle</span>
+          Add New
+        </button>
+      </div>
+
+      <div class="space-y-3">
+        <!-- Customer Profile 1 - Selected -->
+        <label class="flex items-center gap-4 p-4 bg-red-50 border-2 border-red-500 rounded-xl cursor-pointer transition-all">
+          <input 
+            type="radio" 
+            name="customer" 
+            [(ngModel)]="selectedCustomer"
+            value="jane"
+            class="w-5 h-5 accent-red-500" />
+          
+          <!-- Avatar -->
+          <div class="w-16 h-16 rounded-full bg-gray-300 flex-shrink-0 overflow-hidden flex items-center justify-center">
+            <span class="material-symbols-outlined text-3xl text-gray-600">person</span>
+          </div>
+
+          <!-- Customer Info -->
+          <div class="flex-1">
+            <p class="font-bold text-gray-900 text-lg">Jane Doe</p>
+            <p class="text-sm text-gray-600">Loyalty ID: JD12345</p>
+          </div>
+
+          <!-- Checkmark -->
+          <span class="material-symbols-outlined text-red-500 text-2xl">check_circle</span>
+        </label>
+
+        <!-- Customer Profile 2 -->
+        <label class="flex items-center gap-4 p-4 bg-white border border-gray-200 rounded-xl cursor-pointer hover:border-gray-300 transition-all">
+          <input 
+            type="radio" 
+            name="customer" 
+            [(ngModel)]="selectedCustomer"
+            value="john"
+            class="w-5 h-5 accent-red-500" />
+          
+          <!-- Avatar -->
+          <div class="w-16 h-16 rounded-full bg-gray-300 flex-shrink-0 overflow-hidden flex items-center justify-center">
+            <span class="material-symbols-outlined text-3xl text-gray-600">person</span>
+          </div>
+
+          <!-- Customer Info -->
+          <div class="flex-1">
+            <p class="font-bold text-gray-900 text-lg">John Smith</p>
+            <p class="text-sm text-gray-600">Loyalty ID: JS67890</p>
+          </div>
+
+          <!-- Unchecked -->
+          <div class="w-6 h-6 rounded-full border-2 border-gray-400"></div>
+        </label>
+
+        <!-- Guest Option -->
+        <label class="flex items-center gap-4 p-4 bg-white border border-gray-200 rounded-xl cursor-pointer hover:border-gray-300 transition-all">
+          <input 
+            type="radio" 
+            name="customer" 
+            [(ngModel)]="selectedCustomer"
+            value="guest"
+            class="w-5 h-5 accent-red-500" />
+          
+          <!-- Avatar -->
+          <div class="w-16 h-16 rounded-full bg-gray-300 flex-shrink-0 overflow-hidden flex items-center justify-center">
+            <span class="material-symbols-outlined text-3xl text-gray-600">person_outline</span>
+          </div>
+
+          <!-- Customer Info -->
+          <div class="flex-1">
+            <p class="font-bold text-gray-900 text-lg">Guest</p>
+            <p class="text-sm text-gray-600">Continue without a profile</p>
+          </div>
+
+          <!-- Unchecked -->
+          <div class="w-6 h-6 rounded-full border-2 border-gray-400"></div>
+        </label>
+      </div>
+    </div>
+  </main>
+
+  <!-- Continue Button -->
+  <footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-6 shadow-lg">
+    <button 
+      (click)="onSubmit()"
+      [disabled]="isLoading"
+      class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-4 rounded-xl transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed text-lg">
+      {{ isLoading ? 'Loading...' : 'Start Ordering' }}
+    </button>
+  </footer>
+</div>

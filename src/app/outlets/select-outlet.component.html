@@ -1,97 +1,77 @@
-<div class="min-h-screen bg-gray-50 flex flex-col">
+<div class="min-h-screen bg-gradient-to-br from-red-50 to-orange-50 flex flex-col">
 
   <!-- Header -->
-  <div class="sticky top-0 z-20 bg-white border-b border-gray-200 px-4 py-4 flex items-center justify-between">
-    <button (click)="goBack()" class="text-gray-900 flex items-center justify-center w-10 h-10">
+  <div class="sticky top-0 z-20 bg-white border-b border-gray-200 px-4 py-4 flex items-center justify-between shadow-sm">
+    <button (click)="goBack()" class="text-gray-900 flex items-center justify-center w-10 h-10 hover:bg-gray-100 rounded-lg transition">
       <span class="material-symbols-outlined text-2xl">arrow_back</span>
     </button>
-    <h2 class="text-lg font-bold text-gray-900 flex-1 text-center">Select an Outlet</h2>
+    <h2 class="text-lg font-bold text-gray-900 flex-1 text-center">Select Restaurant</h2>
     <div class="w-10"></div>
   </div>
 
   <!-- Search Bar -->
-  <div class="px-4 py-3">
-    <div class="flex items-center w-full h-12 rounded-lg border border-gray-300 bg-white">
+  <div class="px-4 py-4 bg-white border-b border-gray-200">
+    <div class="flex items-center w-full h-12 rounded-lg border border-gray-300 bg-white hover:border-red-400 transition">
       <span class="material-symbols-outlined text-gray-500 px-3 text-xl">search</span>
       <input
         type="text"
         [(ngModel)]="search"
         (input)="filterOutlets()"
-        placeholder="Search by city, address, or zip code"
+        placeholder="Search by city or location..."
         class="flex-1 h-full px-2 bg-white text-gray-900 placeholder:text-gray-500 focus:outline-none"
       />
     </div>
   </div>
 
-  <!-- Map -->
-  <div class="px-4 py-3">
-    <div
-      class="relative w-full h-48 rounded-lg bg-gray-300 bg-cover bg-center"
-      style="background-image: url('https://placeholder.pics/svg/300x300');"
-    >
-      <button class="absolute bottom-3 right-3 bg-white p-2 rounded-full shadow-lg">
-        <span class="material-symbols-outlined text-gray-900">my_location</span>
-      </button>
-    </div>
-  </div>
-
   <!-- Outlets List -->
-  <div class="flex-1 overflow-y-auto px-4 py-4 space-y-4">
-    
-    <!-- View Toggle -->
-    <div class="flex items-center justify-between">
-      <div class="flex h-10 bg-gray-200 rounded-lg p-1">
-        <label class="flex-1 flex items-center justify-center px-4 cursor-pointer text-sm font-medium text-gray-600">
-          List View
-          <input type="radio" class="hidden" name="viewMode" value="list" (change)="viewMode='list'"/>
-        </label>
-        <label class="flex-1 flex items-center justify-center px-4 cursor-pointer text-sm font-medium text-gray-600">
-          Map View
-          <input type="radio" class="hidden" name="viewMode" value="map" (change)="viewMode='map'"/>
-        </label>
-      </div>
-      <button class="flex items-center gap-2 text-gray-900 text-sm font-medium">
-        <span class="material-symbols-outlined text-lg">filter_list</span>
-        Filters
-      </button>
-    </div>
-
+  <div class="flex-1 overflow-y-auto px-4 py-6 space-y-4">
     <!-- Outlets List Items -->
-    <div *ngFor="let outlet of filteredOutlets" class="bg-white p-4 rounded-lg border border-gray-200">
+    <div *ngFor="let outlet of filteredOutlets" class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all">
       
-      <div class="flex justify-between items-start mb-2">
-        <div>
-          <h3 class="font-bold text-gray-900">{{ outlet.name }}</h3>
-          <p class="text-sm text-gray-600">
-            {{ outlet.distance }} miles away • {{ outlet.address }}
+      <div class="flex justify-between items-start mb-3">
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1">
+            <h3 class="font-bold text-lg text-gray-900">{{ outlet.name }}</h3>
+            <button (click)="toggleFavourite(outlet)" class="text-lg hover:scale-110 transition">
+              <span class="material-symbols-outlined" [ngClass]="outlet.fav ? 'text-red-500' : 'text-gray-400'">
+                {{ outlet.fav ? 'favorite' : 'favorite_border' }}
+              </span>
+            </button>
+          </div>
+          <p class="text-sm text-gray-600 flex items-center gap-1">
+            <span class="material-symbols-outlined text-base">location_on</span>
+            {{ outlet.distance }} km away
           </p>
+          <p class="text-xs text-gray-500 mt-1">{{ outlet.address }}</p>
         </div>
-        <button (click)="toggleFavourite(outlet)">
-          <span class="material-symbols-outlined" [ngClass]="outlet.fav ? 'text-red-500' : 'text-gray-400'">
-            {{ outlet.fav ? 'favorite' : 'favorite_border' }}
-          </span>
-        </button>
       </div>
 
-      <div class="flex items-center gap-2 mb-3">
-        <span class="text-sm font-medium" [ngClass]="outlet.status === 'Open' ? 'text-green-600' : 'text-yellow-600'">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold"
+          [ngClass]="outlet.status === 'Open' 
+            ? 'bg-green-100 text-green-700' 
+            : 'bg-yellow-100 text-yellow-700'">
+          <span class="w-2 h-2 rounded-full" [ngClass]="outlet.status === 'Open' ? 'bg-green-600' : 'bg-yellow-600'"></span>
           {{ outlet.status }}
         </span>
-        <span class="text-sm text-gray-600">
-          • {{ outlet.timeNote }}
-        </span>
+        <span class="text-xs text-gray-600">{{ outlet.timeNote }}</span>
       </div>
 
       <button
         (click)="selectOutlet(outlet)"
         [disabled]="outlet.status === 'Closed'"
-        class="w-full py-3 rounded-lg font-bold text-center transition-all"
+        class="w-full py-3 rounded-lg font-bold text-center transition-all text-white"
         [ngClass]="outlet.status === 'Closed'
-          ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-          : 'bg-red-500 text-white hover:bg-red-600'">
-        {{ outlet.status === 'Closed' ? 'Select' : 'Order Here' }}
+          ? 'bg-gray-400 cursor-not-allowed opacity-60'
+          : 'bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 active:scale-95 shadow-md'">
+        {{ outlet.status === 'Closed' ? 'Closed' : 'Select Restaurant' }}
       </button>
     </div>
 
+    <!-- Empty State -->
+    <div *ngIf="filteredOutlets.length === 0" class="text-center py-12">
+      <span class="material-symbols-outlined text-6xl text-gray-300 block mb-4">store</span>
+      <p class="text-gray-600">No restaurants found</p>
+    </div>
   </div>
 </div>

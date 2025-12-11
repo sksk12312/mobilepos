@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NgFor, NgClass } from '@angular/common';
+import { NgFor, NgClass, NgIf } from '@angular/common';
 import { RoutingGuardService } from '../routing-guard.service';
+import { SessionService } from '../services/session.service';
 
 @Component({
   selector: 'app-select-outlet',
   standalone: true,
-  imports: [FormsModule, NgFor, NgClass],
+  imports: [FormsModule, NgFor, NgClass, NgIf],
   templateUrl: './select-outlet.component.html',
   styleUrls: ['./select-outlet.component.scss']
 })
@@ -48,7 +49,7 @@ export class SelectOutletComponent {
 
   filteredOutlets = [...this.outlets];
 
-  constructor(private router: Router, private guardService: RoutingGuardService) {}
+  constructor(private router: Router, private guardService: RoutingGuardService, private sessionService: SessionService) {}
 
   goBack() {
     this.guardService.resetRoutingState();
@@ -68,7 +69,8 @@ export class SelectOutletComponent {
   }
 
   selectOutlet(outlet: any) {
-    console.log('Selected outlet:', outlet.name);
+    // Store selected outlet in SessionService
+    this.sessionService.setSelectedOutlet(outlet.name);
     
     // Set selected outlet in routing guard
     const success = this.guardService.setSelectedOutlet(outlet);
