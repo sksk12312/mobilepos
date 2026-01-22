@@ -13,7 +13,7 @@
         </div>
         <button (click)="goToTableSelect()" class="text-gray-900 flex items-center justify-center w-10 h-10 hover:bg-gray-100 rounded-lg transition relative">
           <span class="material-symbols-outlined text-2xl">table_restaurant</span>
-          <div *ngIf="selectedTable" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
+          <div *ngIf="selectedTable" class="absolute -top-1 -right-1 bg-teal-500 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
             {{ selectedTable }}
           </div>
         </button>
@@ -22,7 +22,7 @@
 
     <!-- Search Bar -->
     <div class="px-4 py-3 border-t border-gray-200">
-      <div class="flex items-center h-11 rounded-lg border border-gray-300 bg-white hover:border-red-400 transition-colors">
+      <div class="flex items-center h-11 rounded-lg border border-gray-300 bg-white hover:border-teal-400 transition-colors">
         <span class="material-symbols-outlined text-gray-500 px-3 text-xl">search</span>
         <input
           type="text"
@@ -41,8 +41,8 @@
         (click)="selectCategory(category)"
         class="px-5 py-2 rounded-full whitespace-nowrap transition-all font-semibold text-sm border"
         [ngClass]="category === selectedCategory 
-          ? 'bg-gradient-to-r from-red-500 to-red-600 text-white border-red-600 shadow-md' 
-          : 'bg-white text-gray-700 border-gray-300 hover:border-red-400'">
+          ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-white border-teal-600 shadow-md' 
+          : 'bg-white text-gray-700 border-gray-300 hover:border-teal-400'">
         {{ category }}
       </button>
     </div>
@@ -55,7 +55,7 @@
     <div class="space-y-4 flex flex-col">
       <div
         *ngFor="let item of filteredMenu"
-        class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-lg hover:border-red-300 transition-all"
+        class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-lg hover:border-blue-300 transition-all"
         [style.zIndex]="expandedInstructions.get(item.id || '') ? 50 : 10"
         >
         <!-- Item Card with Horizontal Layout -->
@@ -72,13 +72,13 @@
             <div class="flex justify-between items-start">
               <div class="flex-1">
                 <p class="font-bold text-gray-900 line-clamp-2 text-base">{{ item.name }}</p>
-                <p class="text-lg font-bold text-red-600 mt-2">${{ item.price.toFixed(2) }}</p>
+                <p class="text-lg font-bold text-teal-600 mt-2">${{ item.price.toFixed(2) }}</p>
               </div>
               <!-- Add/Quantity Button Small on Right -->
               <div class="ml-2" *ngIf="getQuantity(item.id || '') === 0; else quantityControlsSmall">
                 <button
                   (click)="increaseQuantity(item)"
-                  class="flex items-center justify-center w-8 h-8 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all active:scale-95 text-xs flex-shrink-0">
+                  class="flex items-center justify-center w-8 h-8 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition-all active:scale-95 text-xs flex-shrink-0">
                   <span class="material-symbols-outlined text-base">add</span>
                 </button>
               </div>
@@ -86,13 +86,13 @@
                 <div class="flex items-center gap-1 bg-gray-100 rounded-lg p-1 flex-shrink-0">
                   <button
                     (click)="decreaseQuantity(item)"
-                    class="flex items-center justify-center w-6 h-6 text-red-600 hover:bg-red-100 rounded transition text-xs">
+                    class="flex items-center justify-center w-6 h-6 text-teal-600 hover:bg-teal-100 rounded transition text-xs">
                     <span class="material-symbols-outlined text-sm">remove</span>
                   </button>
                   <span class="text-gray-900 font-bold text-xs w-4 text-center">{{ getQuantity(item.id || '') }}</span>
                   <button
                     (click)="increaseQuantity(item)"
-                    class="flex items-center justify-center w-6 h-6 text-red-600 hover:bg-red-100 rounded transition text-xs">
+                    class="flex items-center justify-center w-6 h-6 text-teal-600 hover:bg-teal-100 rounded transition text-xs">
                     <span class="material-symbols-outlined text-sm">add</span>
                   </button>
                 </div>
@@ -137,7 +137,7 @@
                     placeholder="Type custom instructions..."
                     [value]="customInstructions.get(item.id || '') || ''"
                     (input)="updateCustomInstruction(item.id || '', $any($event).target.value)"
-                    class="w-full px-2 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-red-500">
+                    class="w-full px-2 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-teal-500">
                 </div>
               </div>
             </div>
@@ -156,11 +156,11 @@
   <!-- Floating Cart Button -->
   <div class="fixed bottom-6 right-6">
     <button (click)="openCart()"
-      class="relative flex items-center justify-center w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 text-white rounded-full shadow-xl hover:shadow-2xl hover:from-red-600 hover:to-red-700 transition-all active:scale-95">
+      class="relative flex items-center justify-center w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-600 text-white rounded-full shadow-xl hover:shadow-2xl hover:from-teal-600 hover:to-teal-700 transition-all active:scale-95">
       <span class="material-symbols-outlined text-2xl">shopping_bag</span>
       <div
         *ngIf="cartCount > 0"
-        class="absolute -top-2 -right-2 flex items-center justify-center w-7 h-7 bg-white text-red-600 text-xs font-bold rounded-full border-2 border-red-600">
+        class="absolute -top-2 -right-2 flex items-center justify-center w-7 h-7 bg-white text-teal-600 text-xs font-bold rounded-full border-2 border-teal-600">
         {{ cartCount }}
       </div>
     </button>

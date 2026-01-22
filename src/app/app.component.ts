@@ -6,9 +6,15 @@ import { RouterModule } from '@angular/router';
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './app.component.html',
+  template: `
+    <router-outlet></router-outlet>
+  `,
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  now = new Date();
+  title = 'Mobile POS';
+  
+  constructor() {
+    console.log('Mobile POS Application Initialized');
+  }
 }

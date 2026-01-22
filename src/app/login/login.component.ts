@@ -41,4 +41,10 @@ export class LoginComponent {
       this.router.navigate(['/select-outlet']);
     }, 1500);
   }
+
+  navigateToDashboard() {
+    this.authService.login('demo@example.com', 'demo123');
+    this.guardService.setLoggedIn();
+    this.router.navigate(['/dashboard']);
+  }
 }

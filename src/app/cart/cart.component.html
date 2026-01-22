@@ -13,7 +13,7 @@
         </div>
         <button (click)="goToTableSelect()" class="text-gray-900 flex items-center justify-center w-10 h-10 hover:bg-gray-100 rounded-lg transition relative">
           <span class="material-symbols-outlined text-2xl">table_restaurant</span>
-          <div *ngIf="selectedTable" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
+          <div *ngIf="selectedTable" class="absolute -top-1 -right-1 bg-teal-500 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
             {{ selectedTable }}
           </div>
         </button>
@@ -39,7 +39,7 @@
         <!-- Details -->
         <div class="flex-1">
           <p class="font-bold text-gray-900 text-sm">{{ item.name }}</p>
-          <p class="font-bold text-red-600 mt-2 text-base">${{ item.price.toFixed(2) }}</p>
+          <p class="font-bold text-teal-600 mt-2 text-base">${{ item.price.toFixed(2) }}</p>
           
           <!-- Instructions Display -->
           <div *ngIf="item.instructions && item.instructions.length > 0" class="mt-2">
@@ -58,7 +58,7 @@
 
         <!-- Quantity Controls -->
         <div class="flex flex-col items-end justify-between">
-          <button (click)="removeItem(item)" class="text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded transition">
+          <button (click)="removeItem(item)" class="text-teal-500 hover:text-teal-700 hover:bg-teal-50 p-1 rounded transition">
             <span class="material-symbols-outlined text-xl">delete_outline</span>
           </button>
           <div class="flex items-center gap-2 border border-gray-300 rounded-lg overflow-hidden bg-white">
@@ -76,7 +76,7 @@
       <textarea
         [(ngModel)]="specialInstructions"
         placeholder="Any allergies or special requests?"
-        class="w-full h-20 rounded-lg border border-gray-300 p-3 text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none">
+        class="w-full h-20 rounded-lg border border-gray-300 p-3 text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent resize-none">
       </textarea>
     </div>
 
@@ -92,7 +92,7 @@
       </div>
       <div class="flex justify-between font-bold text-gray-900 text-lg">
         <p>Total</p>
-        <p class="text-red-600">${{ total.toFixed(2) }}</p>
+        <p class="text-teal-600">${{ total.toFixed(2) }}</p>
       </div>
     </div>
   </main>
@@ -101,7 +101,7 @@
   <footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-lg">
     <button (click)="goToPayment()"
       [disabled]="cartItems.length === 0"
-      class="w-full bg-gradient-to-r from-red-500 to-red-600 text-white font-bold py-4 rounded-lg hover:from-red-600 hover:to-red-700 transition-all active:scale-95 shadow-md disabled:opacity-50 disabled:cursor-not-allowed">
+      class="w-full bg-gradient-to-r from-teal-500 to-teal-600 text-white font-bold py-4 rounded-lg hover:from-teal-600 hover:to-teal-700 transition-all active:scale-95 shadow-md disabled:opacity-50 disabled:cursor-not-allowed">
       Proceed to Payment • ${{ total.toFixed(2) }}
     </button>
   </footer>

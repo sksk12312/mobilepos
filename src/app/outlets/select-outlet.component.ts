@@ -85,7 +85,7 @@ export class SelectOutletComponent {
     switch (status) {
       case 'Open': return 'text-green-600';
       case 'Closing Soon': return 'text-yellow-600';
-      case 'Closed': return 'text-red-600';
+      case 'Closed': return 'text-teal-600';
       default: return '';
     }
   }

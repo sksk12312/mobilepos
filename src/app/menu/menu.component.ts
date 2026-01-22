@@ -55,7 +55,7 @@ export class MenuComponent implements OnInit, OnDestroy {
       image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAnlJZDPYh1wLpYARI5lbhIlv0Qdft9Zm07wNVJp8jizR7rPKMasvAk7On5m7t9e_uuS-McEBmyKl1a15_fw4M1P2XFrRQQRChLckSE1o_N2Kh9gqhEHlrHkgPaZ8xUjfXoAx5M-38c0mpqcjuRUyAmSJEzkaig2UvGpAdhmKz3R4T7y4qC3tsUP3hUuO2YG0vcqcwwIqJHS6fQFqEP6c66DTYtmf7jjS58NrZfAUAQ7z3gk8DHD2fp_7LplMe2YPrIqXdophJCEA'
     },
     {
-      id: 'item-3',
+      id: 'item-3', 
       name: 'Caprese Salad',
       price: 10.00,
       category: 'Starters',
@@ -107,7 +107,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     this.cartService.itemsObservable.pipe(takeUntil(this.destroy$)).subscribe((items: CartItem[]) => {
       this.cartCount = items.reduce((sum, item) => sum + item.qty, 0);
       // Initialize quantity map from cart
-      items.forEach(item => {
+      items.forEach(item => { 
         this.quantityMap.set(item.id, item.qty);
       });
     });
